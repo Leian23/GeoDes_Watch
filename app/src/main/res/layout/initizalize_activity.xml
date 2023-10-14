@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#323232"
+    android:layout_gravity="center"
+    tools:context=".InitializeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <!-- Your existing ImageView elements -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/watch_image_width"
+            android:layout_height="@dimen/watch_image_height"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="25dp"
+            android:src="@drawable/baseline_watch_24"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/dot1"
+                android:layout_width="@dimen/percent_dot_size"
+                android:layout_height="@dimen/percent_dot_size"
+                android:layout_marginEnd="@dimen/dot_margin"
+                android:background="@drawable/baseline_circle_24"
+                android:visibility="visible"
+                android:animation="@anim/blink" />
+
+            <View
+                android:id="@+id/dot2"
+                android:layout_width="@dimen/percent_dot_size"
+                android:layout_height="@dimen/percent_dot_size"
+                android:layout_marginStart="@dimen/dot_margin"
+                android:layout_marginEnd="@dimen/dot_margin"
+                android:background="@drawable/baseline_circle_24"
+                android:visibility="visible"
+                android:animation="@anim/blink" />
+
+            <View
+                android:id="@+id/dot3"
+                android:layout_width="@dimen/percent_dot_size"
+                android:layout_height="@dimen/percent_dot_size"
+                android:layout_marginStart="@dimen/dot_margin"
+                android:background="@drawable/baseline_circle_24"
+                android:visibility="visible"
+                android:animation="@anim/blink" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="@dimen/phone_image_width"
+            android:layout_height="@dimen/phone_image_height"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="25dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/baseline_smartphone_24"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="2dp"
+        android:text="Signing you in, please make sure GeoDes is open on your phone">
+    </TextView>
+
+</androidx.wear.widget.BoxInsetLayout>

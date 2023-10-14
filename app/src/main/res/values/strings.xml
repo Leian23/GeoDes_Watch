@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">GeoDes_____Watch</string>
+
+    <dimen name="watch_image_width">57dp</dimen>
+    <dimen name="watch_image_height">61dp</dimen>
+    <dimen name="watch_image_margin_top">55dp</dimen>
+    <dimen name="watch_image_margin_end">35dp</dimen>
+    <dimen name="watch_image_margin_bottom">112dp</dimen>
+
+    <dimen name="phone_image_width">57dp</dimen>
+    <dimen name="phone_image_height">61dp</dimen>
+    <dimen name="phone_image_margin_start">30dp</dimen>
+    <dimen name="phone_image_margin_top">54dp</dimen>
+    <dimen name="phone_image_margin_bottom">112dp</dimen>
+
+    <dimen name="dots_layout_margin_start">22dp</dimen>
+    <dimen name="dots_layout_margin_end">22dp</dimen>
+    <dimen name="dots_layout_margin_bottom">175dp</dimen>
+
+    <dimen name="dot_size">10dp</dimen>
+    <dimen name="dot_margin">4dp</dimen>
+    <dimen name="percent_dot_size">10dp</dimen>
+</resources>

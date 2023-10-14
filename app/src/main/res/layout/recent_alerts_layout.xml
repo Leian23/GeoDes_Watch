@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="55dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#323232">
+
+        <ImageButton
+            android:id="@+id/Alerts"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:background="@drawable/round_corner"
+            android:paddingRight="120dp"
+            android:src="@drawable/entry"
+            android:onClick="onVoiceSearchButtonClick"
+             android:scaleType="fitCenter"/>
+
+        <TextView
+            android:id="@+id/TitleAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingLeft="23dp"
+            android:text="Vacation"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
+
