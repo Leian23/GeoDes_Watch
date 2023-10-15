@@ -1,23 +1,48 @@
-// DataModel3.java
-
 package com.example.geodes_____watch.recentAlerts_Adapter;
 
 public class DataModel3 {
-    private String schedTitle;
-    private int entryImage;
+    private String timeSched;
+    private String alarmsSaved;
+    private String titleSetSched;
+    private boolean alertSwitch;
 
-    public DataModel3(String schedTitle, int entryImage) {
-        this.schedTitle = schedTitle;
-        this.entryImage = entryImage;
-        // Initialize other fields as needed
+    private int alarmIc;
+    private int calendarIc;
+    private int clockIc;
+
+    public DataModel3(String timeSched, String alarmsSaved, String titleSetSched, boolean alertSwitch, int alarmIc, int calendarIc, int clockIc) {
+        this.timeSched = timeSched;
+        this.alarmsSaved = alarmsSaved;
+        this.titleSetSched = titleSetSched;
+        this.alertSwitch = alertSwitch;
+        this.alarmIc = alarmIc;
+        this.calendarIc = calendarIc;
+        this.clockIc = clockIc;
     }
 
-    public String getSchedTitle() {
-        return schedTitle;
+    public String getTimeSched() {
+        return timeSched;
     }
 
-    public int getEntryImage() {
-        return entryImage;
+    public String getAlarmsSaved() {
+        return alarmsSaved;
+    }
+
+    public String getTitleSetSched() {
+        return titleSetSched;
+    }
+
+    public boolean isAlertSwitch() {
+        return alertSwitch;
+    }
+    public int getClockIc() {
+        return clockIc;
+    }
+    public int getAlertIc() {
+        return alarmIc;
+    }
+    public int getCalendarIc() {
+        return calendarIc;
     }
 
     // Add getters and setters for other fields if needed

@@ -22,6 +22,8 @@ public class MainActivity extends ComponentActivity {
     private static final int SPEECH_REQUEST_CODE = 0;
     private static final int REQUEST_CODE_KEYBOARD = 1; // Add this constant
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,20 +49,27 @@ public class MainActivity extends ComponentActivity {
             }
         });
 
+       ImageButton Scheduless = findViewById(R.id.Schedules);
+        Scheduless.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ScheduleActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
-        List<DataModel3> dataList = new ArrayList<>();
-        dataList.add(new DataModel3("Title2", R.drawable.entry));
-        dataList.add(new DataModel3("Title2", R.drawable.entry));
-        dataList.add(new DataModel3("Title2", R.drawable.entry));
+        ImageButton alerts = findViewById(R.id.Alerts);
+        alerts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
 
-        RecyclerView recyclerViewSched = findViewById(R.id.recentAlerts_recycle);
-        recyclerViewSched.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        Adapter3 adapterSched = new Adapter3(dataList, this);
-        recyclerViewSched.setAdapter(adapterSched);
 
 
 

@@ -1,5 +1,3 @@
-// Adapter3.java
-
 package com.example.geodes_____watch.recentAlerts_Adapter;
 
 import android.content.Context;
@@ -7,18 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import androidx.wear.widget.WearableRecyclerView;
 
 import com.example.geodes_____watch.R;
 
 import java.util.List;
 
-public class Adapter3 extends RecyclerView.Adapter<Adapter3.ViewHolder> {
+public class Adapter3 extends WearableRecyclerView.Adapter<Adapter3.ViewHolder> {
     private List<DataModel3> dataList;
     private Context context;
     private OnItemClickListener listener;
@@ -31,7 +31,7 @@ public class Adapter3 extends RecyclerView.Adapter<Adapter3.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recent_alerts_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sched_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -45,7 +45,7 @@ public class Adapter3 extends RecyclerView.Adapter<Adapter3.ViewHolder> {
             @Override
             public void onClick(View view) {
                 // Handle item click here
-                Toast.makeText(context, "Clicked: " + data.getSchedTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Clicked: " + data.getTitleSetSched(), Toast.LENGTH_SHORT).show();
 
                 if (listener != null) {
                     listener.onItemClick(data);
@@ -59,24 +59,46 @@ public class Adapter3 extends RecyclerView.Adapter<Adapter3.ViewHolder> {
         return dataList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTextView;
+    public class ViewHolder extends WearableRecyclerView.ViewHolder {
+        TextView timeSched;
+        TextView alarmsSaved;
+        TextView titleSetSched;
+        Switch alertSwitch;
         ImageButton entryImageButton;
+        ImageView clockIc;
+        ImageView calendarIc;
+
+        ImageView alarmIc;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            titleTextView = itemView.findViewById(R.id.TitleAlert);
-            entryImageButton = itemView.findViewById(R.id.Alerts); // Use the ImageButton ID from your layout
-            // Initialize other views as needed
+            timeSched = itemView.findViewById(R.id.TimeSched);
+            alarmsSaved = itemView.findViewById(R.id.alarmsSaved);
+            titleSetSched = itemView.findViewById(R.id.TitleSetSched);
+            alertSwitch = itemView.findViewById(R.id.AlertSwitch);
+            entryImageButton = itemView.findViewById(R.id.Alerts);
+            clockIc = itemView.findViewById(R.id.clockSchedIc);
+            calendarIc = itemView.findViewById(R.id.calendarImage);
+            alarmIc = itemView.findViewById(R.id.AlarmIc);
+
+
+
+
         }
 
         public void bind(DataModel3 data) {
-            titleTextView.setText(data.getSchedTitle());
-            entryImageButton.setImageResource(data.getEntryImage());
-
-            // Set other data as needed
+            timeSched.setText(data.getTimeSched());
+            alarmsSaved.setText(data.getAlarmsSaved());
+            titleSetSched.setText(data.getTitleSetSched());
+            alertSwitch.setChecked(data.isAlertSwitch());
+            alarmIc.setImageResource(data.getAlertIc());
+            clockIc.setImageResource(data.getClockIc());
+            calendarIc.setImageResource(data.getCalendarIc());
         }
     }
+
+
 
     public interface OnItemClickListener {
         void onItemClick(DataModel3 data);
