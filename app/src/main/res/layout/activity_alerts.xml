@@ -24,30 +24,21 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="23dp"
-                android:text="Schedules"
+                android:text="Alerts"
                 android:textSize="18dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"/>
 
             <androidx.wear.widget.WearableRecyclerView
-                android:id="@+id/viewer"
+                android:id="@+id/viewerAlerts"
                 android:layout_marginLeft="12dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingBottom="20dp"
+                android:paddingBottom="30dp"
                 android:overScrollMode="never"/>
-
-            <ImageButton
-                android:layout_width="60dp"
-                android:id="@+id/addSchedulelist"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:background="@drawable/round_corner"
-                android:src="@drawable/baseline_add_24">
-            </ImageButton>
 
             <FrameLayout
                 android:layout_width="wrap_content"

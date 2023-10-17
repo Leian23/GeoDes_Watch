@@ -1,33 +1,39 @@
-package com.example.geodes_____watch;
+package com.example.geodes_____watch.Sched_section;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.ComponentActivity;
 
-import com.example.geodes_____watch.AlertSection.AlertsActivity;
-import com.example.geodes_____watch.MapSection.map_activity;
-import com.example.geodes_____watch.Sched_section.ScheduleActivity;
+import com.example.geodes_____watch.R;
+import com.example.geodes_____watch.Sched_section.add_alertt_recycle_view.list_alerts;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
-public class MainActivity extends ComponentActivity {
+public class addSched_activity extends ComponentActivity {
+
     private static final int SPEECH_REQUEST_CODE = 0;
-    private static final int REQUEST_CODE_KEYBOARD = 1; // Add this constant
-
-
+    private static final int REQUEST_CODE_KEYBOARD = 1;
+    private Button addAlert;
+    private ImageButton voiceSearchButton;
+    private ImageButton textSearchButton;
+    private Button btnPickTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.add_schedules_layout);
 
-        // Set an OnClickListener for voiceSearchButton
-        ImageButton voiceSearchButton = findViewById(R.id.voiceSearchButton);
+        voiceSearchButton = findViewById(R.id.voiceSearchButton);
         voiceSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,8 +42,7 @@ public class MainActivity extends ComponentActivity {
             }
         });
 
-        // Set an OnClickListener for textSearchButton
-        ImageButton textSearchButton = findViewById(R.id.textSearchButton);
+        textSearchButton = findViewById(R.id.textSearchButton);
         textSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,38 +51,22 @@ public class MainActivity extends ComponentActivity {
             }
         });
 
-       ImageButton Scheduless = findViewById(R.id.Schedules);
-        Scheduless.setOnClickListener(new View.OnClickListener() {
+        addAlert = findViewById(R.id.ChooseAlert);
+        addAlert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ScheduleActivity.class);
+                Intent intent = new Intent(addSched_activity.this, list_alerts.class);
                 startActivity(intent);
             }
         });
 
-
-        ImageButton alerts = findViewById(R.id.Alertss);
-        alerts.setOnClickListener(new View.OnClickListener() {
+        btnPickTime = findViewById(R.id.PickTime);
+        btnPickTime.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AlertsActivity.class);
-                startActivity(intent);
-
+            public void onClick(View view) {
+                showTimePicker();
             }
         });
-
-        ImageButton maps = findViewById(R.id.Map);
-        maps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, map_activity.class);
-                startActivity(intent);
-
-            }
-        });
-
-
-
     }
 
     private void launchKeyboard() {
@@ -122,5 +111,39 @@ public class MainActivity extends ComponentActivity {
         // For example, show a Toast with the entered text
         Toast.makeText(this, "Entered text: " + comment, Toast.LENGTH_SHORT).show();
     }
-}
 
+    private void showTimePicker() {
+        // Get the current time
+        final Calendar calendar = Calendar.getInstance();
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // Create a TimePickerDialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        // Convert 24-hour format to 12-hour format
+                        int hourIn12Format = selectedHour % 12;
+                        String amPm = (selectedHour >= 12) ? "PM" : "AM";
+
+                        // Handle the selected time, e.g., update a TextView
+                        String selectedTime = String.format(Locale.getDefault(), "%02d:%02d %s", hourIn12Format, selectedMinute, amPm);
+                        // textView.setText(selectedTime);
+                        btnPickTime.setText(selectedTime);
+                    }
+                },
+                hourOfDay,
+                minute,
+                false // Set to false to show AM/PM option
+        );
+
+        // Show the TimePickerDialog
+        timePickerDialog.show();
+    }
+
+
+
+
+}

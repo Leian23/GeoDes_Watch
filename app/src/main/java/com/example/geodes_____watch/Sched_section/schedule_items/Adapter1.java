@@ -1,5 +1,4 @@
-package com.example.geodes_____watch.recentAlerts_Adapter;
-
+package com.example.geodes_____watch.Sched_section.schedule_items;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,21 +8,19 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.wear.widget.WearableRecyclerView;
 
 import com.example.geodes_____watch.R;
 
 import java.util.List;
 
-public class Adapter3 extends WearableRecyclerView.Adapter<Adapter3.ViewHolder> {
-    private List<DataModel3> dataList;
+public class Adapter1 extends WearableRecyclerView.Adapter<Adapter1.ViewHolder> {
+    private List<DataModel1> dataList;
     private Context context;
     private OnItemClickListener listener;
 
-    public Adapter3(List<DataModel3> dataList, Context context) {
+    public Adapter1(List<DataModel1> dataList, Context context) {
         this.dataList = dataList;
         this.context = context;
     }
@@ -37,7 +34,7 @@ public class Adapter3 extends WearableRecyclerView.Adapter<Adapter3.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DataModel3 data = dataList.get(position);
+        DataModel1 data = dataList.get(position);
         holder.bind(data);
 
         // You may need to handle onClickListeners for other interactive elements
@@ -82,12 +79,9 @@ public class Adapter3 extends WearableRecyclerView.Adapter<Adapter3.ViewHolder> 
             calendarIc = itemView.findViewById(R.id.calendarImage);
             alarmIc = itemView.findViewById(R.id.AlarmIc);
 
-
-
-
         }
 
-        public void bind(DataModel3 data) {
+        public void bind(DataModel1 data) {
             timeSched.setText(data.getTimeSched());
             alarmsSaved.setText(data.getAlarmsSaved());
             titleSetSched.setText(data.getTitleSetSched());
@@ -101,7 +95,7 @@ public class Adapter3 extends WearableRecyclerView.Adapter<Adapter3.ViewHolder> 
 
 
     public interface OnItemClickListener {
-        void onItemClick(DataModel3 data);
+        void onItemClick(DataModel1 data);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

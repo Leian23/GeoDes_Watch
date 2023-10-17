@@ -1,6 +1,6 @@
-package com.example.geodes_____watch.recentAlerts_Adapter;
+package com.example.geodes_____watch.Sched_section.schedule_items;
 
-public class DataModel3 {
+public class DataModel1 {
     private String timeSched;
     private String alarmsSaved;
     private String titleSetSched;
@@ -10,7 +10,7 @@ public class DataModel3 {
     private int calendarIc;
     private int clockIc;
 
-    public DataModel3(String timeSched, String alarmsSaved, String titleSetSched, boolean alertSwitch, int alarmIc, int calendarIc, int clockIc) {
+    public DataModel1(String timeSched, String alarmsSaved, String titleSetSched, boolean alertSwitch, int alarmIc, int calendarIc, int clockIc) {
         this.timeSched = timeSched;
         this.alarmsSaved = alarmsSaved;
         this.titleSetSched = titleSetSched;

@@ -37,7 +37,7 @@ public class InitializeActivity extends ComponentActivity {
                 startActivity(new Intent(InitializeActivity.this, MainActivity.class));
                 finish();
             }
-        }, 5000);
+        }, 1000);
     }
 
 
