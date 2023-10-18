@@ -77,7 +77,6 @@ public class MainActivity extends ComponentActivity {
         });
 
 
-
     }
 
     private void launchKeyboard() {

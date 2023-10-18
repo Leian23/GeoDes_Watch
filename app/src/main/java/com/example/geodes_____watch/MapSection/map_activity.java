@@ -3,11 +3,14 @@ package com.example.geodes_____watch.MapSection;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.media.Image;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.activity.ComponentActivity;
@@ -32,6 +35,11 @@ public class map_activity extends ComponentActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     private ImageButton backpress;
+    private ImageButton addGeofence;
+    private ImageButton addLandmarks;
+
+    private ImageButton cancelAddGeofence;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,35 @@ public class map_activity extends ComponentActivity {
                 onBackPressed();
             }
         });
+
+        addGeofence = findViewById(R.id.addGeoButton);
+        addGeofence.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideElements();
+            }
+        });
+
+        cancelAddGeofence = findViewById(R.id.cancelButton);
+
+        cancelAddGeofence.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showElements();
+            }
+        });
+
+        addLandmarks = findViewById(R.id.addLandmarksButton);
+
+        addLandmarks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LandmarksDialog landmarksDialog = new LandmarksDialog(map_activity.this);
+                landmarksDialog.show();
+            }
+
+        });
+
 
     }
 
@@ -123,6 +160,23 @@ public class map_activity extends ComponentActivity {
     protected void onPause() {
         super.onPause();
         mapView.onPause();
+    }
+
+    public void hideElements() {
+        findViewById(R.id.addGeoButton).setVisibility(View.GONE);
+        findViewById(R.id.addLandmarksButton).setVisibility(View.GONE);
+        findViewById(R.id.backMap).setVisibility(View.GONE);
+
+        RelativeLayout overlayLayoutt = findViewById(R.id.overlayLayout);
+        overlayLayoutt.setVisibility(View.VISIBLE);
+    }
+
+    public void showElements() {
+        findViewById(R.id.addGeoButton).setVisibility(View.VISIBLE);
+        findViewById(R.id.addLandmarksButton).setVisibility(View.VISIBLE);
+        findViewById(R.id.backMap).setVisibility(View.VISIBLE);
+        RelativeLayout overlayLayoutt = findViewById(R.id.overlayLayout);
+        overlayLayoutt.setVisibility(View.GONE);
     }
 
 

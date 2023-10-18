@@ -14,19 +14,21 @@ import androidx.activity.ComponentActivity;
 
 import com.example.geodes_____watch.R;
 import com.example.geodes_____watch.Sched_section.add_alertt_recycle_view.list_alerts;
+import com.example.geodes_____watch.Sched_section.repeat_alert_activity.RepeatAlertActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class addSched_activity extends ComponentActivity {
-
     private static final int SPEECH_REQUEST_CODE = 0;
     private static final int REQUEST_CODE_KEYBOARD = 1;
     private Button addAlert;
     private ImageButton voiceSearchButton;
     private ImageButton textSearchButton;
+    private ImageButton discardAddSched;
     private Button btnPickTime;
+    private Button RepeatSchedd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,25 @@ public class addSched_activity extends ComponentActivity {
                 showTimePicker();
             }
         });
+
+        RepeatSchedd = findViewById(R.id.RepeatSched);
+        RepeatSchedd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(addSched_activity.this, RepeatAlertActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        discardAddSched = findViewById(R.id.discardAdd);
+        discardAddSched.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {onBackPressed();}
+        });
+
+
+
+
     }
 
     private void launchKeyboard() {
@@ -136,7 +157,7 @@ public class addSched_activity extends ComponentActivity {
                 },
                 hourOfDay,
                 minute,
-                false // Set to false to show AM/PM option
+                false
         );
 
         // Show the TimePickerDialog

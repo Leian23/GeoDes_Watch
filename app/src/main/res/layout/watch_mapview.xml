@@ -24,6 +24,7 @@
         android:gravity="center">
 
     <ImageButton
+        android:id="@+id/addGeoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
@@ -33,6 +34,7 @@
         android:layout_marginRight="10dp"/>
 
         <ImageButton
+            android:id="@+id/addLandmarksButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
@@ -50,6 +52,9 @@
             android:background="@drawable/map_button_corner"
             android:padding="5dp" />
     </LinearLayout>
+
+    <include layout = "@layout/add_geofence"></include>
+
 
 
 

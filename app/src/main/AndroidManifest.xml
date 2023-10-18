@@ -68,9 +68,12 @@
         <activity
             android:name=".Sched_section.add_alertt_recycle_view.list_alerts"
             android:exported="false">
-
         </activity>
 
+        <activity
+            android:name=".Sched_section.repeat_alert_activity.RepeatAlertActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>
