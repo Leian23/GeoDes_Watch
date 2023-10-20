@@ -45,4 +45,5 @@ dependencies {
     implementation("org.osmdroid:osmdroid-android:6.1.6")
     implementation("org.osmdroid:osmdroid-mapsforge:6.1.6")
     implementation("org.osmdroid:osmdroid-wms:6.1.6")
+    implementation ("androidx.preference:preference:1.1.1")
 }

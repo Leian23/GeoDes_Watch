@@ -64,59 +64,71 @@
                     />
 
             </LinearLayout>
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center">
 
                 <Button
                     android:id="@+id/ChooseAlert"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:background="@drawable/round_corner"
-                    android:onClick="onVoiceSearchButtonClick"
-                    android:textSize="12dp"
                     android:gravity="center"
+                    android:onClick="onVoiceSearchButtonClick"
+                    android:src="@drawable/baseline_info_24"
                     android:text="Choose Alert"
-                    android:src="@drawable/baseline_info_24" />
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.95"/>
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center">
 
                 <Button
                     android:id="@+id/PickTime"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:background="@drawable/round_corner"
                     android:onClick="onVoiceSearchButtonClick"
                     android:text="Pick Time"
                     android:textSize="12dp"
-                    android:src="@drawable/baseline_info_24" />
-            </RelativeLayout>
+                    android:src="@drawable/baseline_info_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.95"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
                 android:paddingBottom="20dp"
                 android:layout_gravity="center">
 
                 <Button
                     android:id="@+id/RepeatSched"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:background="@drawable/round_corner"
                     android:onClick="onVoiceSearchButtonClick"
                     android:text="Repeat"
                     android:textSize="12dp"
-                    android:src="@drawable/baseline_info_24" />
-            </RelativeLayout>
+                    android:src="@drawable/baseline_info_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.95"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

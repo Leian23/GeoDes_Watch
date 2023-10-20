@@ -74,6 +74,10 @@
             android:name=".Sched_section.repeat_alert_activity.RepeatAlertActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".Settings_section.settings_activity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>

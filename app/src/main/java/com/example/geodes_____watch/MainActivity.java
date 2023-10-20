@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -12,6 +13,8 @@ import androidx.activity.ComponentActivity;
 import com.example.geodes_____watch.AlertSection.AlertsActivity;
 import com.example.geodes_____watch.MapSection.map_activity;
 import com.example.geodes_____watch.Sched_section.ScheduleActivity;
+import com.example.geodes_____watch.Settings_section.settings_activity;
+
 
 import java.util.ArrayList;
 
@@ -46,7 +49,7 @@ public class MainActivity extends ComponentActivity {
             }
         });
 
-       ImageButton Scheduless = findViewById(R.id.Schedules);
+       Button Scheduless = findViewById(R.id.Schedules);
         Scheduless.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +59,7 @@ public class MainActivity extends ComponentActivity {
         });
 
 
-        ImageButton alerts = findViewById(R.id.Alertss);
+        Button alerts = findViewById(R.id.Alertss);
         alerts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,13 +69,24 @@ public class MainActivity extends ComponentActivity {
             }
         });
 
-        ImageButton maps = findViewById(R.id.Map);
+        Button maps = findViewById(R.id.Map);
         maps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, map_activity.class);
                 startActivity(intent);
 
+            }
+        });
+
+
+        Button settings = findViewById(R.id.Settings);
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, settings_activity.class);
+                startActivity(intent);
             }
         });
 

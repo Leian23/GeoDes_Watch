@@ -61,12 +61,6 @@
                     android:textOff="wed"
                     android:textOn="wed" />
 
-                <ToggleButton
-                    android:id="@+id/toggleThu"
-                    style="@style/CircleToggleButton"
-                    android:textOff="thu"
-                    android:textOn="thu" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -81,40 +75,63 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            <ToggleButton
-                android:id="@+id/toggleFri"
-                style="@style/CircleToggleButton"
-                android:textOff="fri"
-                android:textOn="fri" />
+                <ToggleButton
+                    android:id="@+id/toggleFri"
+                    style="@style/CircleToggleButton"
+                    android:textOff="fri"
+                    android:textOn="fri" />
 
-            <ToggleButton
-                android:id="@+id/toggleSat"
-                style="@style/CircleToggleButton"
-                android:textOff="sat"
-                android:textOn="sat" />
+                <ToggleButton
+                    android:id="@+id/toggleSat"
+                    style="@style/CircleToggleButton"
+                    android:textOff="sat"
+                    android:textOn="sat" />
 
-            <ToggleButton
-                android:id="@+id/toggleSun"
-                style="@style/CircleToggleButton"
-                android:textOff="sun"
-                android:textOn="sun" />
+                <ToggleButton
+                    android:id="@+id/toggleSun"
+                    style="@style/CircleToggleButton"
+                    android:textOff="sun"
+                    android:textOn="sun" />
             </LinearLayout>
 
+
+        <LinearLayout
+            android:id="@+id/daysGridLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:columnCount="7"
+            android:rowCount="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ToggleButton
+                android:id="@+id/toggleThu"
+                style="@style/CircleToggleButton"
+                android:textOff="thu"
+                android:textOn="thu" />
+
             <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
+                android:layout_width="65dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
                 android:background="@drawable/round_corner"
                 android:src="@drawable/baseline_check_24"/>
 
+
+
+        </LinearLayout>
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp">
+                android:paddingTop="40dp">
             </FrameLayout>
 
         </LinearLayout>
+
+
     </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

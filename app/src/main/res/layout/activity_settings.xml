@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/settings_container"
     android:background="#323232">
 
     <androidx.core.widget.NestedScrollView
@@ -13,7 +14,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:scrollbars="vertical"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,25 +26,22 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="23dp"
-                android:text="Alerts"
+                android:text="Settings"
                 android:textSize="18dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginTop="16dp"/>
 
-            <androidx.wear.widget.WearableRecyclerView
-                android:id="@+id/viewerAlerts"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/frag"
+                android:name="com.example.geodes_____watch.Settings_section.MyPreferenceFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingBottom="30dp"
-                android:overScrollMode="never"/>
+                android:layout_height="match_parent" />
+
 
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp">
+                android:paddingTop="40dp">
             </FrameLayout>
 
         </LinearLayout>

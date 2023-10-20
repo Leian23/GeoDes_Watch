@@ -11,12 +11,14 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.activity.ComponentActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.geodes_____watch.MapSection.create_geofence_functions.MapFunctionHandler;
 import com.example.geodes_____watch.R;
 
 import org.osmdroid.config.Configuration;
@@ -40,6 +42,10 @@ public class map_activity extends ComponentActivity {
 
     private ImageButton cancelAddGeofence;
 
+    private MapFunctionHandler locationHandler;
+    private SeekBar outerSeekBar;
+    private SeekBar innerSeekBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +53,12 @@ public class map_activity extends ComponentActivity {
         Configuration.getInstance().load(getApplicationContext(), getPreferences(MODE_PRIVATE));
         setContentView(R.layout.watch_mapview);
 
+
+
         mapView = findViewById(R.id.ViewMap);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
+
+        locationHandler = new MapFunctionHandler(map_activity.this, mapView);
 
         Log.d("MapViewDebug", "Tile source set to MAPNIK");
         mapView.setMultiTouchControls(true);
