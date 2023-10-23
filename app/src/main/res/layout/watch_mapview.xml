@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layouut"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#323232">
@@ -56,9 +57,12 @@
             android:background="@drawable/map_button_corner"
             android:padding="5dp"
             android:src="@drawable/close_gray" />
+
+
     </LinearLayout>
 
     <include layout = "@layout/add_geofence"></include>
+    <include layout = "@layout/add_layout_map"></include>
 
 
 

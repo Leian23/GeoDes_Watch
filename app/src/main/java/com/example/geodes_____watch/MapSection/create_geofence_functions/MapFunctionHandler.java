@@ -10,12 +10,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.core.app.ComponentActivity;
 
 
+import com.example.geodes_____watch.AlertSection.AlertsActivity;
+import com.example.geodes_____watch.AlertSection.addAlertActivity;
 import com.example.geodes_____watch.MainActivity;
+import com.example.geodes_____watch.MapSection.map_activity;
+import com.example.geodes_____watch.R;
 
 
 import org.osmdroid.api.IMapController;
@@ -74,6 +82,7 @@ public class MapFunctionHandler {
                 }
             }
         });
+
         this.mapView.getOverlays().add(0, mapEventsOverlay);
 
         // Check and request location permissions at runtime
@@ -87,29 +96,22 @@ public class MapFunctionHandler {
             // For devices running versions below Marshmallow, no need to check permissions, just initialize location updates
             initializeLocationUpdates();
         }
-
+        UpdateGeofence();
     }
 
 
+    private void UpdateGeofence() {
 
- /*
-
-        // Inside setupSeekBarListeners method
-        ToggleButton toggleButton = ((map_activity) context).findViewById(R.id.toggleButton);
+        ToggleButton toggleButton = ((map_activity) context).findViewById(R.id.toggles);
 
         toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             isEntryMode = isChecked;
-            updateInnerSeekBarState();
 
-            // Call the method to update the color of the outer geofence based on the toggle button state
             if (geofenceSetup != null) {
                 geofenceSetup.updateOuterGeofenceColor(!isChecked);
             }
         });
-
-
-  */
-
+    }
 
 
     private void initializeLocationUpdates() {
@@ -198,14 +200,9 @@ public class MapFunctionHandler {
 
         mapView.invalidate();
 
-
-        /*
-
-        // Set the toggle button to true
-        ToggleButton toggleButton = ((map_activity) context).findViewById(R.id.toggleButton);
-        toggleButton.setChecked(true);
-        */
-
+         ((map_activity) context).hideElements();
+         RelativeLayout showAddLayout = ((map_activity) context).findViewById(R.id.add_cancel_layout);
+         showAddLayout.setVisibility(View.VISIBLE);
     }
 
 
@@ -228,8 +225,6 @@ public class MapFunctionHandler {
 
 
 
-
-
     public void clearMarkerAndGeofences() {
         // Remove existing marker and geofences
         mapView.getOverlays().remove(mapMarker);
@@ -239,26 +234,6 @@ public class MapFunctionHandler {
         mapView.invalidate();
     }
 
-
-    private void updateGeofences(double outerRadius, double innerRadius) {
-        if (geofenceSetup != null && mapMarker != null) {
-            GeoPoint markerPosition = mapMarker.getPosition();
-
-            // Assuming the geofences are stored in MapManager, update them directly
-            geofenceSetup.updateGeofences(markerPosition, outerRadius, innerRadius);
-
-            // Calculate bounding box
-            BoundingBox boundingBox = calculateBoundingBox(markerPosition, outerRadius);
-
-            // Animate the map to the new bounding box
-                mapView.zoomToBoundingBox(boundingBox, true);
-
-            mapView.invalidate();
-        }
-    }
-
-
-    // Inside MapFunctionHandler class
 
     public void setLongPressEnabled(boolean enabled) {
         isLongPressEnabled = enabled;

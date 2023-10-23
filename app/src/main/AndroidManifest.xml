@@ -78,6 +78,24 @@
             android:name=".Settings_section.settings_activity"
             android:exported="false">
         </activity>
+
+        <activity
+            android:name=".AlertSection.addAlertActivity"
+            android:exported="false">
+        </activity>
+
+        <activity
+            android:name=".showVoiceText"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".Sched_section.ViewClickedSched"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".AlertSection.ViewAlertAct"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>

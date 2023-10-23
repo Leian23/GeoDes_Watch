@@ -17,8 +17,7 @@ import com.example.geodes_____watch.Sched_section.schedule_items.DataModel1;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScheduleActivity extends ComponentActivity {
-
+public class ScheduleActivity extends ComponentActivity implements Adapter1.OnItemClickListener {
     private ImageButton addShedule;
 
     @Override
@@ -36,12 +35,13 @@ public class ScheduleActivity extends ComponentActivity {
         WearableRecyclerView recyclerVieww = findViewById(R.id.viewer);
         recyclerVieww.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         Adapter1 adapter1 = new Adapter1(dataList, this);
+        adapter1.setOnItemClickListener(this); // Set the listener
         recyclerVieww.setAdapter(adapter1);
         recyclerVieww.setEdgeItemsCenteringEnabled(false);
 
 
-        addShedule = findViewById(R.id.addSchedulelist);
 
+        addShedule = findViewById(R.id.addSchedulelist);
         addShedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,13 +49,14 @@ public class ScheduleActivity extends ComponentActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
 
-
-
+    @Override
+    public void onItemClick(DataModel1 data) {
+        Intent intent = new Intent(ScheduleActivity.this, ViewClickedSched.class);
+        startActivity(intent);
+    }
 
 }
 

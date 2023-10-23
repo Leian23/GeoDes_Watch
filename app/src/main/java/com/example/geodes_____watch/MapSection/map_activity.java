@@ -1,6 +1,7 @@
 package com.example.geodes_____watch.MapSection;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.media.Image;
@@ -13,11 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.activity.ComponentActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.geodes_____watch.AlertSection.addAlertActivity;
+import com.example.geodes_____watch.MapSection.create_geofence_functions.GeofenceSetup;
 import com.example.geodes_____watch.MapSection.create_geofence_functions.MapFunctionHandler;
 import com.example.geodes_____watch.R;
 
@@ -43,8 +47,16 @@ public class map_activity extends ComponentActivity {
     private ImageButton cancelAddGeofence;
 
     private MapFunctionHandler locationHandler;
+    private ImageButton cancelButton;
+
+    private ImageButton addGeo;
     private SeekBar outerSeekBar;
     private SeekBar innerSeekBar;
+
+    private GeofenceSetup geofenceSetup;
+
+    private boolean isEntryMode = true;
+
 
 
     @Override
@@ -52,8 +64,6 @@ public class map_activity extends ComponentActivity {
         super.onCreate(savedInstanceState);
         Configuration.getInstance().load(getApplicationContext(), getPreferences(MODE_PRIVATE));
         setContentView(R.layout.watch_mapview);
-
-
 
         mapView = findViewById(R.id.ViewMap);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
@@ -77,6 +87,8 @@ public class map_activity extends ComponentActivity {
 
 
 
+
+
         backpress = findViewById(R.id.backMap);
 
         backpress.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +103,9 @@ public class map_activity extends ComponentActivity {
             @Override
             public void onClick(View view) {
                 hideElements();
+
+                RelativeLayout addAlert = findViewById(R.id.addAlertLayout);
+                addAlert.setVisibility(View.VISIBLE);
             }
         });
 
@@ -110,6 +125,28 @@ public class map_activity extends ComponentActivity {
             public void onClick(View view) {
                 LandmarksDialog landmarksDialog = new LandmarksDialog(map_activity.this);
                 landmarksDialog.show();
+            }
+
+        });
+
+        cancelButton = findViewById(R.id.cancel_add_geofence);
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showElements();
+                locationHandler.clearMarkerAndGeofences();
+            }
+
+        });
+
+
+        addGeo = findViewById(R.id.addButt);
+        addGeo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(map_activity.this, addAlertActivity.class);
+                startActivity(intent);
             }
 
         });
@@ -177,16 +214,25 @@ public class map_activity extends ComponentActivity {
         findViewById(R.id.addLandmarksButton).setVisibility(View.GONE);
         findViewById(R.id.backMap).setVisibility(View.GONE);
 
-        RelativeLayout overlayLayoutt = findViewById(R.id.overlayLayout);
-        overlayLayoutt.setVisibility(View.VISIBLE);
+
+
     }
 
     public void showElements() {
         findViewById(R.id.addGeoButton).setVisibility(View.VISIBLE);
         findViewById(R.id.addLandmarksButton).setVisibility(View.VISIBLE);
         findViewById(R.id.backMap).setVisibility(View.VISIBLE);
-        RelativeLayout overlayLayoutt = findViewById(R.id.overlayLayout);
-        overlayLayoutt.setVisibility(View.GONE);
+
+
+        RelativeLayout addAlert = findViewById(R.id.addAlertLayout);
+        RelativeLayout cancelAlert = findViewById(R.id.add_cancel_layout);
+
+        if (addAlert.getVisibility() == View.VISIBLE) {
+            addAlert.setVisibility(View.GONE);
+        } else if (cancelAlert.getVisibility() == View.VISIBLE) {
+            cancelAlert.setVisibility(View.GONE);
+        }
+
     }
 
 

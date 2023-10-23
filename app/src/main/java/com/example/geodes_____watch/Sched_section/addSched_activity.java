@@ -11,9 +11,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.ComponentActivity;
-
-import com.example.geodes_____watch.R;
 import com.example.geodes_____watch.Sched_section.add_alertt_recycle_view.list_alerts;
+import com.example.geodes_____watch.R;
+
 import com.example.geodes_____watch.Sched_section.repeat_alert_activity.RepeatAlertActivity;
 
 import java.util.ArrayList;

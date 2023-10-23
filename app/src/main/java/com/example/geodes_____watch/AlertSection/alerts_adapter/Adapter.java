@@ -1,6 +1,7 @@
 package com.example.geodes_____watch.AlertSection.alerts_adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,8 @@ public class Adapter extends WearableRecyclerView.Adapter<Adapter.ViewHolder> {
         TextView ListAlarms;
         Switch alertSwitch;
 
+        ImageView alertPref;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -78,6 +81,7 @@ public class Adapter extends WearableRecyclerView.Adapter<Adapter.ViewHolder> {
              pinIcon = itemView.findViewById(R.id.pinalerts);
              ListAlarms = itemView.findViewById(R.id.alarmLists);
              alertSwitch = itemView.findViewById(R.id.AlertSwitch);
+             alertPref = itemView.findViewById(R.id.AlertPreference);
         }
 
         public void bind(DataModel data) {
@@ -87,6 +91,7 @@ public class Adapter extends WearableRecyclerView.Adapter<Adapter.ViewHolder> {
             repeatDescription.setText(data.getRepeatDescription());
             pinIcon.setImageResource(data.getPinIcon());
             ListAlarms.setText(data.getListAlarms());
+            alertPref.setImageResource(data.getAlertPref());
             alertSwitch.setChecked(data.getAlertSwitch1());
         }
     }

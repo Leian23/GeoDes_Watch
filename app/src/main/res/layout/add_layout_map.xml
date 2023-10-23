@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/add_cancel_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <!-- Add Geofence Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageButton
+                android:id="@+id/addButt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/map_button_corner"
+                android:padding="5dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/add_geo_line"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:layout_marginRight="8dp"/>
+
+            <ToggleButton
+                android:id="@+id/toggles"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/custom_radio_background"
+                android:checked="true"
+                android:textOn="Entry"
+                android:textOff="Exit"
+                android:textColor="@color/black"
+                android:textAllCaps="false"
+                android:textSize="12dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="8dp"
+                />
+
+            <ImageButton
+                android:id="@+id/cancel_add_geofence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/map_button_corner"
+                android:padding="5dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/close_gray"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

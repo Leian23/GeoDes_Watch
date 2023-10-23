@@ -5,7 +5,6 @@ public class DataModel1 {
     private String alarmsSaved;
     private String titleSetSched;
     private boolean alertSwitch;
-
     private int alarmIc;
     private int calendarIc;
     private int clockIc;

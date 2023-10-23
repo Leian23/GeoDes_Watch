@@ -10,7 +10,9 @@ public class DataModel {
     private String ListAlarms;
     private boolean alertSwitch;
 
-    public DataModel(String TitleAlerts, String NotesAlerts,int Imgcalendar, String repeatDescription, int pinIcon, String ListAlarms, boolean alertSwitch  ) {
+    private int alertPref;
+
+    public DataModel(String TitleAlerts, String NotesAlerts,int Imgcalendar, String repeatDescription, int pinIcon, String ListAlarms, boolean alertSwitch, int alertPref  ) {
         this.TitleAlerts = TitleAlerts;
         this.NotesAlerts = NotesAlerts;
         this.Imgcalendar = Imgcalendar;
@@ -18,6 +20,7 @@ public class DataModel {
         this.pinIcon = pinIcon;
         this.ListAlarms = ListAlarms;
         this.alertSwitch = alertSwitch;
+        this.alertPref = alertPref;
     }
 
     public String getTitleAlerts() {
@@ -30,6 +33,8 @@ public class DataModel {
     public String getRepeatDescription () { return repeatDescription; }
     public int getPinIcon() { return pinIcon; }
     public String getListAlarms() { return ListAlarms; }
+
+    public int getAlertPref() {return alertPref;}
     public boolean getAlertSwitch1() { return alertSwitch; }
 
 
