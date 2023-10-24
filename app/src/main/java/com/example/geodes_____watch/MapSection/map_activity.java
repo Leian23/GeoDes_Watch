@@ -1,18 +1,17 @@
 package com.example.geodes_____watch.MapSection;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.media.Image;
+
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
+
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -21,7 +20,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.geodes_____watch.AlertSection.addAlertActivity;
-import com.example.geodes_____watch.MapSection.create_geofence_functions.GeofenceSetup;
+
 import com.example.geodes_____watch.MapSection.create_geofence_functions.MapFunctionHandler;
 import com.example.geodes_____watch.R;
 
@@ -50,10 +49,7 @@ public class map_activity extends ComponentActivity {
     private ImageButton cancelButton;
 
     private ImageButton addGeo;
-    private SeekBar outerSeekBar;
-    private SeekBar innerSeekBar;
-
-    private GeofenceSetup geofenceSetup;
+    private ToggleButton toggleButton;
 
     private boolean isEntryMode = true;
 
@@ -135,6 +131,9 @@ public class map_activity extends ComponentActivity {
             @Override
             public void onClick(View view) {
                 showElements();
+
+                toggleButton = findViewById(R.id.toggles);
+                toggleButton.setChecked(isEntryMode);
                 locationHandler.clearMarkerAndGeofences();
             }
 

@@ -6,22 +6,18 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.core.app.ComponentActivity;
 
 
-import com.example.geodes_____watch.AlertSection.AlertsActivity;
-import com.example.geodes_____watch.AlertSection.addAlertActivity;
-import com.example.geodes_____watch.MainActivity;
+
 import com.example.geodes_____watch.MapSection.map_activity;
 import com.example.geodes_____watch.R;
 
@@ -50,11 +46,13 @@ public class MapFunctionHandler {
     private boolean isGpsProviderEnabled = true;
     private boolean isLocationUpdatesInitialized = false;
     private Marker mapMarker;
-
     private GeofenceSetup geofenceSetup;
-
     private boolean isLongPressEnabled = true;
     private boolean isEntryMode = true;
+
+    private double outerRadius = 50;
+    private double innerRadius = 20;
+
 
 
 
@@ -109,6 +107,13 @@ public class MapFunctionHandler {
 
             if (geofenceSetup != null) {
                 geofenceSetup.updateOuterGeofenceColor(!isChecked);
+
+                if (!isChecked) {
+                    updateGeofences(outerRadius, 0);
+                } else {
+                    updateGeofences(outerRadius, innerRadius);
+                }
+
             }
         });
     }
@@ -182,8 +187,6 @@ public class MapFunctionHandler {
             geofenceSetup = new GeofenceSetup(context, mapView);
         }
 
-        double outerRadius = 50; // Set your desired default outer radius
-        double innerRadius = isEntryMode ? 20 : 0; // Set your desired default inner radius
 
 
 
@@ -233,6 +236,25 @@ public class MapFunctionHandler {
 
         mapView.invalidate();
     }
+
+
+    private void updateGeofences(double outerRadius, double innerRadius) {
+        if (geofenceSetup != null && mapMarker != null) {
+            GeoPoint markerPosition = mapMarker.getPosition();
+
+            // Assuming the geofences are stored in MapManager, update them directly
+            geofenceSetup.updateGeofences(markerPosition, outerRadius, innerRadius);
+
+            // Calculate bounding box
+            BoundingBox boundingBox = calculateBoundingBox(markerPosition, outerRadius);
+
+            // Animate the map to the new bounding box
+            mapView.zoomToBoundingBox(boundingBox, true);
+
+            mapView.invalidate();
+        }
+    }
+
 
 
     public void setLongPressEnabled(boolean enabled) {

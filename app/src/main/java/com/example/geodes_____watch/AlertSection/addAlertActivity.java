@@ -11,8 +11,7 @@ import android.widget.ToggleButton;
 import androidx.activity.ComponentActivity;
 import androidx.cardview.widget.CardView;
 
-import com.example.geodes_____watch.AlertSection.alerts_adapter.Adapter;
-import com.example.geodes_____watch.AlertSection.alerts_adapter.DataModel;
+
 import com.example.geodes_____watch.MapSection.create_geofence_functions.GeofenceSetup;
 import com.example.geodes_____watch.MapSection.map_activity;
 import com.example.geodes_____watch.R;

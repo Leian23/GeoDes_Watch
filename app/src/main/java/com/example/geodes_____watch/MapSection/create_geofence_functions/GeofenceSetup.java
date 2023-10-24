@@ -58,6 +58,8 @@ public class GeofenceSetup {
 
             // Update inner geofence
             innerGeofence.setPoints(Polygon.pointsAsCircle(markerPoint, innerGeofenceRadius));
+
+
             mapView.invalidate();
         }
     }
@@ -66,9 +68,9 @@ public class GeofenceSetup {
         mapView.getOverlayManager().remove(outerGeofence);
         mapView.getOverlayManager().remove(innerGeofence);
         mapView.getOverlays().remove(marker);
-
         mapView.invalidate();
     }
+
 
 
 

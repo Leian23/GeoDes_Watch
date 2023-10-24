@@ -10,9 +10,7 @@ import androidx.wear.widget.WearableRecyclerView;
 import com.example.geodes_____watch.R;
 import com.example.geodes_____watch.AlertSection.alerts_adapter.Adapter;
 import com.example.geodes_____watch.AlertSection.alerts_adapter.DataModel;
-import com.example.geodes_____watch.Sched_section.ScheduleActivity;
-import com.example.geodes_____watch.Sched_section.ViewClickedSched;
-import com.example.geodes_____watch.Sched_section.schedule_items.DataModel1;
+
 
 import java.util.ArrayList;
 import java.util.List;
