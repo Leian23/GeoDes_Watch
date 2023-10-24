@@ -7,8 +7,6 @@ import androidx.activity.ComponentActivity;
 import com.example.geodes_____watch.R;
 
 
-
-
 public class ViewAlertAct extends ComponentActivity {
 
     @Override

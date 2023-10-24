@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import android.widget.RelativeLayout;
@@ -25,6 +26,9 @@ import com.example.geodes_____watch.MapSection.create_geofence_functions.MapFunc
 import com.example.geodes_____watch.R;
 
 import org.osmdroid.config.Configuration;
+import org.osmdroid.events.MapListener;
+import org.osmdroid.events.ScrollEvent;
+import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -53,6 +57,10 @@ public class map_activity extends ComponentActivity {
 
     private boolean isEntryMode = true;
 
+    private boolean isLocating = false;
+
+    private boolean isLocationEnabled = false;
+
 
 
     @Override
@@ -60,6 +68,10 @@ public class map_activity extends ComponentActivity {
         super.onCreate(savedInstanceState);
         Configuration.getInstance().load(getApplicationContext(), getPreferences(MODE_PRIVATE));
         setContentView(R.layout.watch_mapview);
+
+
+
+
 
         mapView = findViewById(R.id.ViewMap);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
@@ -87,12 +99,49 @@ public class map_activity extends ComponentActivity {
 
         backpress = findViewById(R.id.backMap);
 
+        backpress.setImageResource(R.drawable.baseline_my_location_24);
+
         backpress.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                onBackPressed();
+            public void onClick(View v) {
+                if (isLocationEnabled) {
+                    // Handle locating the user's current location functionality
+                    locateUser();
+                    // Change the button to the "Close Map"
+                } else {
+                    onBackPressed(); // Handle closing the map functionality
+                }
             }
         });
+
+        mapView.setMapListener(new MapListener() {
+            @Override
+            public boolean onScroll(ScrollEvent event) {
+                // User has panned the map; change the button's functionality
+                if (!isLocationEnabled) {
+                    enableLocationMode();
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onZoom(ZoomEvent event) {
+                // User has zoomed the map; change the button's functionality
+                if (!isLocationEnabled) {
+                    enableLocationMode();
+                }
+                return true;
+            }
+        });
+
+
+
+
+
+
+
+
+
 
         addGeofence = findViewById(R.id.addGeoButton);
         addGeofence.setOnClickListener(new View.OnClickListener() {
@@ -233,6 +282,38 @@ public class map_activity extends ComponentActivity {
         }
 
     }
+
+
+
+    private void toggleLocationMode() {
+        if (isLocationEnabled) {
+            isLocationEnabled = false;
+            backpress.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+        } else {
+            isLocationEnabled = true;
+            backpress.setImageResource(R.drawable.baseline_my_location_24);
+        }
+    }
+
+    // Function to enable location mode
+    private void enableLocationMode() {
+        isLocationEnabled = true;
+        backpress.setImageResource(R.drawable.baseline_my_location_24);
+    }
+
+
+    private void locateUser() {
+        if (myLocationOverlay != null) {
+            Location lastKnownLocation = myLocationOverlay.getLastFix();
+            if (lastKnownLocation != null) {
+                GeoPoint userLocation = new GeoPoint(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                mapView.getController().animateTo(userLocation);
+                mapView.getController().setZoom(15.0);
+                toggleLocationMode();
+            }
+        }
+    }
+
 
 
 }
