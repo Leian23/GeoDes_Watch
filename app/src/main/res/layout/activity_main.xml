@@ -18,6 +18,9 @@
         android:scrollbars="vertical"
         tools:context=".MainActivity">
 
+        <include layout="@layout/result_window"
+            android:visibility="gone"></include>
+
 
         <ImageButton
             android:id="@+id/textSearchButton"

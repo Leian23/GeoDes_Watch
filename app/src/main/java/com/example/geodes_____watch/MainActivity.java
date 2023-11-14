@@ -1,26 +1,53 @@
+
+
+
 package com.example.geodes_____watch;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.ComponentActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.wear.widget.WearableRecyclerView;
 
 import com.example.geodes_____watch.AlertSection.AlertsActivity;
 import com.example.geodes_____watch.MapSection.map_activity;
+import com.example.geodes_____watch.MapSection.search_location.LocationResultt;
+import com.example.geodes_____watch.MapSection.search_location.ResultLocation;
+import com.example.geodes_____watch.MapSection.search_location.SearchResultsAdapter;
 import com.example.geodes_____watch.Sched_section.ScheduleActivity;
 import com.example.geodes_____watch.Settings_section.settings_activity;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.osmdroid.util.GeoPoint;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends ComponentActivity {
     private static final int SPEECH_REQUEST_CODE = 0;
     private static final int REQUEST_CODE_KEYBOARD = 1; // Add this constant
+
+    private WearableRecyclerView recyclerViewSearchResults;
+    private Context context;
+
 
 
 
@@ -28,6 +55,24 @@ public class MainActivity extends ComponentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerViewSearchResults = findViewById(R.id.recyclerViewSearchResults);
+
+
+        // Set up RecyclerView
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerViewSearchResults.setLayoutManager(layoutManager);
+
+        if (recyclerViewSearchResults == null) {
+            Log.e("MainActivity", "recyclerViewSearchResults is null");
+        } else {
+            // Continue with other initialization
+            SearchResultsAdapter adapter = new SearchResultsAdapter();
+            recyclerViewSearchResults.setAdapter(adapter);
+        }
+
+
+
 
         // Set an OnClickListener for voiceSearchButton
         ImageButton voiceSearchButton = findViewById(R.id.voiceSearchButton);
@@ -49,7 +94,7 @@ public class MainActivity extends ComponentActivity {
             }
         });
 
-       Button Scheduless = findViewById(R.id.Schedules);
+        Button Scheduless = findViewById(R.id.Schedules);
         Scheduless.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,22 +143,20 @@ public class MainActivity extends ComponentActivity {
         startActivityForResult(intent, REQUEST_CODE_KEYBOARD);
     }
 
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CODE_KEYBOARD:
                     String resultText = (data != null) ? data.getStringExtra("result_text") : "";
-                    sendComment(resultText);
+                    new NominatimTask().execute(resultText);
                     break;
                 case SPEECH_REQUEST_CODE:
                     ArrayList<String> results = data.getStringArrayListExtra(
                             RecognizerIntent.EXTRA_RESULTS);
                     if (results != null && results.size() > 0) {
                         String spokenText = results.get(0);
-                        // Perform search using the interpreted text
-                        // You can use the Google Places API here
+                        new NominatimTask().execute(spokenText);
                     }
                     break;
             }
@@ -128,12 +171,63 @@ public class MainActivity extends ComponentActivity {
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
     }
 
-    private void sendComment(String comment) {
-        // Implement your logic for handling the result text from the keyboard
-        // This method is invoked when the keyboard activity returns a result
 
-        // For example, show a Toast with the entered text
-        Toast.makeText(this, "Entered text: " + comment, Toast.LENGTH_SHORT).show();
+
+
+
+    private class NominatimTask extends AsyncTask<String, Void, ArrayList<LocationResultt>> {
+        @Override
+        protected ArrayList<LocationResultt> doInBackground(String... params) {
+            ArrayList<LocationResultt> results = new ArrayList<>();
+            OkHttpClient client = new OkHttpClient();
+
+            String url = "https://nominatim.openstreetmap.org/search?q=" + params[0] + "&format=json";
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                String jsonData = response.body().string();
+                JSONArray jsonArray = new JSONArray(jsonData);
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String displayName = jsonObject.optString("display_name", "");
+                    double latitude = jsonObject.optDouble("lat", 0);
+                    double longitude = jsonObject.optDouble("lon", 0);
+                    results.add(new LocationResultt(displayName, latitude, longitude));
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<LocationResultt> results) {
+            super.onPostExecute(results);
+
+            if (results.size() > 0) {
+                // There are results from Nominatim
+                SearchResultsAdapter adapter = (SearchResultsAdapter) recyclerViewSearchResults.getAdapter();
+                adapter.setData(results);
+
+                Intent intent = new Intent(MainActivity.this, ResultLocation.class);
+                intent.putParcelableArrayListExtra("search_results", results);
+                startActivity(intent);
+
+                // Show a toast indicating that Nominatim is working
+                Toast.makeText(MainActivity.this, "Nominatim is working", Toast.LENGTH_SHORT).show();
+            } else {
+                // No results from Nominatim
+                Toast.makeText(MainActivity.this, "No results found", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+
     }
+
 }
 

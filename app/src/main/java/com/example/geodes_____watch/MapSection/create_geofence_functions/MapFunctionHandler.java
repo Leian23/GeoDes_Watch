@@ -1,6 +1,7 @@
 package com.example.geodes_____watch.MapSection.create_geofence_functions;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -10,7 +11,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -22,6 +25,9 @@ import com.example.geodes_____watch.MapSection.map_activity;
 import com.example.geodes_____watch.R;
 
 
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
@@ -32,11 +38,13 @@ import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polygon;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class MapFunctionHandler {
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-    private static final long MIN_TIME_BETWEEN_UPDATES = 0; // 500 milliseconds
-    private static final float MIN_DISTANCE_BETWEEN_UPDATES = 10;
 
     private Context context;
     private MapView mapView;
@@ -49,9 +57,15 @@ public class MapFunctionHandler {
     private GeofenceSetup geofenceSetup;
     private boolean isLongPressEnabled = true;
     private boolean isEntryMode = true;
+    private static final String API_KEY = "ade995c254e64059a8a05234230611";
 
     private double outerRadius = 50;
     private double innerRadius = 20;
+
+    private double lat;
+    private double lonng;
+
+
 
 
 
@@ -106,7 +120,7 @@ public class MapFunctionHandler {
             isEntryMode = isChecked;
 
             if (geofenceSetup != null) {
-                geofenceSetup.updateOuterGeofenceColor(!isChecked);
+                geofenceSetup.updateOuterGeofenceColor(mapView.getContext(), !isChecked);
 
                 if (!isChecked) {
                     updateGeofences(outerRadius, 0);
@@ -164,9 +178,6 @@ public class MapFunctionHandler {
 
     }
 
-    private void updateLocationOnMap(GeoPoint geoPoint) {
-        mapController.setCenter(geoPoint);
-    }
 
     private void showToast(final String message) {
         new Handler(Looper.getMainLooper()).post(() -> {
@@ -174,13 +185,14 @@ public class MapFunctionHandler {
         });
     }
 
-    private void dropPinOnMap(GeoPoint geoPoint) {
+    public void dropPinOnMap(GeoPoint geoPoint) {
         // Clear existing marker and geofences
         clearMarkerAndGeofences();
 
         // Add a new marker at the long-pressed location
         mapMarker = new Marker(mapView);
         mapMarker.setPosition(geoPoint);
+        mapMarker.setVisible(false);
         mapView.getOverlays().add(mapMarker);
 
         if (geofenceSetup == null) {
@@ -188,9 +200,7 @@ public class MapFunctionHandler {
         }
 
 
-
-
-        geofenceSetup.addMarkerWithGeofences(geoPoint.getLatitude(), geoPoint.getLongitude(), outerRadius, innerRadius);
+        geofenceSetup.addMarkerWithGeofences(mapView.getContext(), geoPoint.getLatitude(), geoPoint.getLongitude(), outerRadius, innerRadius);
 
         // Calculate bounding box
         BoundingBox boundingBox = calculateBoundingBox(geoPoint, outerRadius);
@@ -203,9 +213,13 @@ public class MapFunctionHandler {
 
         mapView.invalidate();
 
+         lat = geoPoint.getLatitude();
+         lonng = geoPoint.getLongitude();
+
          ((map_activity) context).hideElements();
          RelativeLayout showAddLayout = ((map_activity) context).findViewById(R.id.add_cancel_layout);
          showAddLayout.setVisibility(View.VISIBLE);
+
     }
 
 
@@ -260,4 +274,19 @@ public class MapFunctionHandler {
     public void setLongPressEnabled(boolean enabled) {
         isLongPressEnabled = enabled;
     }
+
+
+
+
+
+
+    public double getLat() {
+        return lat;
+    }
+    public double getLong() {
+        return lonng;
+    }
+
+
+
 }

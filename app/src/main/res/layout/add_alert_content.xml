@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/AlertTitle"
             android:layout_width="wrap_content"
             android:layout_height="23dp"
             android:text="Name"
@@ -70,12 +70,11 @@
 
 
         <FrameLayout
-            android:id="@+id/LiveMap"
+            android:id="@+id/WeatherView"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_marginTop="90dp"
             android:background="@drawable/round_corner_notes"
-            android:onClick="onVoiceSearchButtonClick"
             android:paddingLeft="5dp"
             android:text="Schedules"
             android:textAllCaps="false"
@@ -83,7 +82,34 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.80"/>
+            app:layout_constraintWidth_percent="0.80">
+
+            <ImageView
+                android:id="@+id/weatherIconImageView"
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+
+            <TextView
+                android:id="@+id/weatherTemp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Weather Info"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/weatherCon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Weather Info"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF" />
+
+
+
+
+        </FrameLayout>
 
 
 
@@ -106,7 +132,7 @@
 
         <TextView
             android:id="@+id/Coordinates"
-            android:layout_width="130dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
 
@@ -129,7 +155,6 @@
             android:layout_marginTop="250dp"
             app:cardCornerRadius="10dp"
             app:cardBackgroundColor="#545454"
-            android:onClick="onVoiceSearchButtonClick"
             android:paddingLeft="10dp"
             android:textAllCaps="false"
             android:textSize="12sp"

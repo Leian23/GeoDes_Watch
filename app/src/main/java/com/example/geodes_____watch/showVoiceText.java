@@ -1,13 +1,19 @@
 package com.example.geodes_____watch;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.ComponentActivity;
+
+import com.example.geodes_____watch.AlertSection.addAlertActivity;
+import com.example.geodes_____watch.MapSection.map_activity;
 
 import java.util.ArrayList;
 
@@ -15,6 +21,8 @@ public class showVoiceText extends ComponentActivity {
 
     private static final int SPEECH_REQUEST_CODE = 0;
     private static final int REQUEST_CODE_KEYBOARD = 1;
+
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,20 +60,27 @@ public class showVoiceText extends ComponentActivity {
             switch (requestCode) {
                 case REQUEST_CODE_KEYBOARD:
                     String resultText = (data != null) ? data.getStringExtra("result_text") : "";
-                    sendComment(resultText);
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("result_text", resultText);
+                    setResult(RESULT_OK, resultIntent);
+                    finish();
                     break;
                 case SPEECH_REQUEST_CODE:
                     ArrayList<String> results = data.getStringArrayListExtra(
                             RecognizerIntent.EXTRA_RESULTS);
                     if (results != null && results.size() > 0) {
                         String spokenText = results.get(0);
-                        // Perform search using the interpreted text
-                        // You can use the Google Places API here
+                        Intent speechResultIntent = new Intent();
+                        speechResultIntent.putExtra("speech_result", spokenText);
+                        setResult(RESULT_OK, speechResultIntent);
+                        finish();
                     }
                     break;
             }
         }
     }
+
+
 
     private void displaySpeechRecognizer() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -75,13 +90,7 @@ public class showVoiceText extends ComponentActivity {
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
     }
 
-    private void sendComment(String comment) {
-        // Implement your logic for handling the result text from the keyboard
-        // This method is invoked when the keyboard activity returns a result
 
-        // For example, show a Toast with the entered text
-        Toast.makeText(this, "Entered text: " + comment, Toast.LENGTH_SHORT).show();
-    }
 
 
 

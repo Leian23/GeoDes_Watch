@@ -1,9 +1,13 @@
 package com.example.geodes_____watch.MapSection;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -17,14 +21,25 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.activity.ComponentActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
 
 import com.example.geodes_____watch.AlertSection.addAlertActivity;
 
 import com.example.geodes_____watch.MapSection.create_geofence_functions.MapFunctionHandler;
-import com.example.geodes_____watch.R;
 
+import com.example.geodes_____watch.R;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.tasks.Task;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapListener;
 import org.osmdroid.events.ScrollEvent;
@@ -33,7 +48,23 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.Task;
+
+
+
 
 public class map_activity extends ComponentActivity {
 
@@ -41,11 +72,13 @@ public class map_activity extends ComponentActivity {
     MyLocationNewOverlay myLocationOverlay;
     private static final double MIN_ZOOM_LEVEL = 4.0;
     private static final double MAX_ZOOM_LEVEL = 21.0;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
 
     private ImageButton backpress;
     private ImageButton addGeofence;
-    private ImageButton addLandmarks;
+    private ImageButton userlocate;
+
+    private Context context;
 
     private ImageButton cancelAddGeofence;
 
@@ -61,6 +94,17 @@ public class map_activity extends ComponentActivity {
 
     private boolean isLocationEnabled = false;
 
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 123;
+    private FusedLocationProviderClient fusedLocationClient;
+
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
+    private static final int REQUEST_CHECK_SETTINGS = 2;
+
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+
+    private ImageButton addGeofenceButt;
+
 
 
     @Override
@@ -71,7 +115,7 @@ public class map_activity extends ComponentActivity {
 
 
 
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         mapView = findViewById(R.id.ViewMap);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
@@ -91,53 +135,92 @@ public class map_activity extends ComponentActivity {
         mapView.getController().setZoom(8.0);
         mapView.setMinZoomLevel(MIN_ZOOM_LEVEL);
         mapView.setMaxZoomLevel(MAX_ZOOM_LEVEL);
-        checkLocationPermission();
 
+
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+            // Set up location request
+            locationRequest = new LocationRequest();
+            locationRequest.setInterval(10000); // 10 seconds
+            locationRequest.setFastestInterval(5000); // 5 seconds
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+            // Set up location callback
+            locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    if (locationResult == null) {
+                        return;
+                    }
+                    for (Location location : locationResult.getLocations()) {
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+
+
+                        // Do something else with the location if needed (e.g., update UI or send to a server)
+                    }
+                }
+            };
+        }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+
+        // Check location settings
+        checkLocationSettings();
+
+
+
+
+
+        double selectedLatitude = getIntent().getDoubleExtra("latitude", 0.0);
+        double selectedLongitude = getIntent().getDoubleExtra("longitude", 0.0);
+
+        // Check if the location information is valid
+        if (selectedLatitude != 0.0 && selectedLongitude != 0.0) {
+            // Create a GeoPoint from the selected location
+            GeoPoint selectedLocation = new GeoPoint(selectedLatitude, selectedLongitude);
+
+            // Drop a pin on the selected location
+            locationHandler.dropPinOnMap(selectedLocation);
+        }
+
+
+
+
+
+
+
+
+        addGeofenceButt = findViewById(R.id.addGeofenceButton);
+        addGeofenceButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GeoPoint centerPoint = (GeoPoint) mapView.getMapCenter();
+                locationHandler.dropPinOnMap(centerPoint);
+
+                RelativeLayout addAlert = findViewById(R.id.addAlertLayout);
+                addAlert.setVisibility(View.GONE);
+
+
+
+
+            }
+        });
 
 
 
 
         backpress = findViewById(R.id.backMap);
-
-        backpress.setImageResource(R.drawable.baseline_my_location_24);
-
         backpress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLocationEnabled) {
-                    // Handle locating the user's current location functionality
-                    locateUser();
-                    // Change the button to the "Close Map"
-                } else {
-                    onBackPressed(); // Handle closing the map functionality
-                }
+
+                    onBackPressed();
             }
         });
-
-        mapView.setMapListener(new MapListener() {
-            @Override
-            public boolean onScroll(ScrollEvent event) {
-                // User has panned the map; change the button's functionality
-                if (!isLocationEnabled) {
-                    enableLocationMode();
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onZoom(ZoomEvent event) {
-                // User has zoomed the map; change the button's functionality
-                if (!isLocationEnabled) {
-                    enableLocationMode();
-                }
-                return true;
-            }
-        });
-
-
-
-
-
 
 
 
@@ -163,13 +246,11 @@ public class map_activity extends ComponentActivity {
             }
         });
 
-        addLandmarks = findViewById(R.id.addLandmarksButton);
-
-        addLandmarks.setOnClickListener(new View.OnClickListener() {
+        userlocate = findViewById(R.id.userlocator);
+        userlocate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LandmarksDialog landmarksDialog = new LandmarksDialog(map_activity.this);
-                landmarksDialog.show();
+                locateUser();
             }
 
         });
@@ -194,81 +275,31 @@ public class map_activity extends ComponentActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(map_activity.this, addAlertActivity.class);
+
+                double latitude = locationHandler.getLat();
+                double longitude = locationHandler.getLong();
+
+                intent.putExtra("lat", latitude);
+                intent.putExtra("lonng", longitude);
+
                 startActivity(intent);
             }
-
         });
 
 
+
     }
 
-    private void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    LOCATION_PERMISSION_REQUEST_CODE);
-        } else {
-            // Permission has already been granted
-            enableMyLocationOverlay();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                enableMyLocationOverlay();
-            } else {
-                // Handle permission denied
-                Toast.makeText(this, "Location permission denied. Cannot show your location on the map.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    // Initialize and enable the user's location overlay on the map
-    private void enableMyLocationOverlay() {
-        myLocationOverlay = new MyLocationNewOverlay(mapView);
-        myLocationOverlay.enableMyLocation();
-        mapView.getOverlays().add(myLocationOverlay);
-
-        // Center the map on the user's location (if available)
-        Location lastKnownLocation = myLocationOverlay.getLastFix();
-        if (lastKnownLocation != null) {
-            GeoPoint startPoint = new GeoPoint(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-            mapView.getController().animateTo(startPoint);
-            mapView.getController().setZoom(15.0);
-            mapView.setTileSource(TileSourceFactory.MAPNIK);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
 
     public void hideElements() {
         findViewById(R.id.addGeoButton).setVisibility(View.GONE);
-        findViewById(R.id.addLandmarksButton).setVisibility(View.GONE);
+        findViewById(R.id.userlocator).setVisibility(View.GONE);
         findViewById(R.id.backMap).setVisibility(View.GONE);
-
-
-
     }
 
     public void showElements() {
         findViewById(R.id.addGeoButton).setVisibility(View.VISIBLE);
-        findViewById(R.id.addLandmarksButton).setVisibility(View.VISIBLE);
+        findViewById(R.id.userlocator).setVisibility(View.VISIBLE);
         findViewById(R.id.backMap).setVisibility(View.VISIBLE);
 
 
@@ -283,37 +314,112 @@ public class map_activity extends ComponentActivity {
 
     }
 
-
-
-    private void toggleLocationMode() {
-        if (isLocationEnabled) {
-            isLocationEnabled = false;
-            backpress.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-        } else {
-            isLocationEnabled = true;
-            backpress.setImageResource(R.drawable.baseline_my_location_24);
-        }
-    }
-
-    // Function to enable location mode
-    private void enableLocationMode() {
-        isLocationEnabled = true;
-        backpress.setImageResource(R.drawable.baseline_my_location_24);
-    }
-
-
     private void locateUser() {
+        MyLocationNewOverlay myLocationOverlay = (MyLocationNewOverlay) mapView.getOverlays().stream()
+                .filter(overlay -> overlay instanceof MyLocationNewOverlay)
+                .findFirst()
+                .orElse(null);
+
         if (myLocationOverlay != null) {
             Location lastKnownLocation = myLocationOverlay.getLastFix();
             if (lastKnownLocation != null) {
                 GeoPoint userLocation = new GeoPoint(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                 mapView.getController().animateTo(userLocation);
-                mapView.getController().setZoom(15.0);
-                toggleLocationMode();
             }
         }
     }
 
 
 
+
+    private void checkLocationSettings() {
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        Task<LocationSettingsResponse> result =
+                LocationServices.getSettingsClient(this).checkLocationSettings(builder.build());
+
+        result.addOnCompleteListener(task -> {
+            try {
+                task.getResult(ApiException.class);
+                requestLocationUpdates();
+            } catch (ApiException exception) {
+                if (exception.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                    try {
+                        ResolvableApiException resolvable = (ResolvableApiException) exception;
+                        resolvable.startResolutionForResult(map_activity.this, REQUEST_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException | ClassCastException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private void requestLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+            setupMyLocationOverlay(); // Call this method after obtaining location permissions
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+        }
+    }
+
+
+
+
+    private void setupMyLocationOverlay() {
+        MyLocationNewOverlay myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this), mapView);
+        myLocationOverlay.enableMyLocation();
+        mapView.getOverlays().add(myLocationOverlay);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                requestLocationUpdates();
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            if (resultCode == RESULT_OK) {
+                requestLocationUpdates();
+            } else {
+                Toast.makeText(this, "Location settings not satisfied, cannot proceed", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+        setupMyLocationOverlay();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+
+
+
+
 }
+
+
+
+

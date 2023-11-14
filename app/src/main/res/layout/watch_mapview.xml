@@ -40,14 +40,14 @@
             android:src="@drawable/baseline_add_location_alt_24" />
 
         <ImageButton
-            android:id="@+id/addLandmarksButton"
+            android:id="@+id/userlocator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/map_button_corner"
             android:padding="5dp"
-            android:src="@drawable/landmarks_ic" />
+            android:src="@drawable/baseline_my_location_24" />
 
         <ImageButton
             android:id="@+id/backMap"

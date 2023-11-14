@@ -7,6 +7,7 @@ import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -29,11 +30,14 @@ public class addSched_activity extends ComponentActivity {
     private ImageButton discardAddSched;
     private Button btnPickTime;
     private Button RepeatSchedd;
+    private TextView scheduleTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_schedules_layout);
+
+        scheduleTitle = findViewById(R.id.ScheduleTitle);
 
         voiceSearchButton = findViewById(R.id.voiceSearchButton);
         voiceSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -102,15 +106,14 @@ public class addSched_activity extends ComponentActivity {
             switch (requestCode) {
                 case REQUEST_CODE_KEYBOARD:
                     String resultText = (data != null) ? data.getStringExtra("result_text") : "";
-                    sendComment(resultText);
+                    scheduleTitle.setText(resultText);
                     break;
                 case SPEECH_REQUEST_CODE:
                     ArrayList<String> results = data.getStringArrayListExtra(
                             RecognizerIntent.EXTRA_RESULTS);
                     if (results != null && results.size() > 0) {
                         String spokenText = results.get(0);
-                        // Perform search using the interpreted text
-                        // You can use the Google Places API here
+                        scheduleTitle.setText(spokenText);
                     }
                     break;
             }
@@ -123,14 +126,6 @@ public class addSched_activity extends ComponentActivity {
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Voice search for location");
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
-    }
-
-    private void sendComment(String comment) {
-        // Implement your logic for handling the result text from the keyboard
-        // This method is invoked when the keyboard activity returns a result
-
-        // For example, show a Toast with the entered text
-        Toast.makeText(this, "Entered text: " + comment, Toast.LENGTH_SHORT).show();
     }
 
     private void showTimePicker() {
