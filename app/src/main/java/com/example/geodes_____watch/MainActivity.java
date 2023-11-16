@@ -149,14 +149,14 @@ public class MainActivity extends ComponentActivity {
             switch (requestCode) {
                 case REQUEST_CODE_KEYBOARD:
                     String resultText = (data != null) ? data.getStringExtra("result_text") : "";
-                    new NominatimTask().execute(resultText);
+                    new GooglePlacesTask().execute(resultText);
                     break;
                 case SPEECH_REQUEST_CODE:
                     ArrayList<String> results = data.getStringArrayListExtra(
                             RecognizerIntent.EXTRA_RESULTS);
                     if (results != null && results.size() > 0) {
                         String spokenText = results.get(0);
-                        new NominatimTask().execute(spokenText);
+                        new GooglePlacesTask().execute(spokenText);
                     }
                     break;
             }
@@ -175,13 +175,18 @@ public class MainActivity extends ComponentActivity {
 
 
 
-    private class NominatimTask extends AsyncTask<String, Void, ArrayList<LocationResultt>> {
+    private class GooglePlacesTask extends AsyncTask<String, Void, ArrayList<LocationResultt>> {
         @Override
         protected ArrayList<LocationResultt> doInBackground(String... params) {
             ArrayList<LocationResultt> results = new ArrayList<>();
             OkHttpClient client = new OkHttpClient();
 
-            String url = "https://nominatim.openstreetmap.org/search?q=" + params[0] + "&format=json";
+            // Replace "YOUR_GOOGLE_API_KEY" with your actual Google API key
+            String apiKey = "AIzaSyA-PwG-IjCROFu9xXBRizCuyz8L83V8Guc";
+            String url = "https://maps.googleapis.com/maps/api/place/textsearch/json" +
+                    "?query=" + params[0] +
+                    "&key=" + apiKey;
+
             Request request = new Request.Builder()
                     .url(url)
                     .build();
@@ -189,14 +194,26 @@ public class MainActivity extends ComponentActivity {
             try {
                 Response response = client.newCall(request).execute();
                 String jsonData = response.body().string();
-                JSONArray jsonArray = new JSONArray(jsonData);
+                JSONObject jsonObject = new JSONObject(jsonData);
 
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    String displayName = jsonObject.optString("display_name", "");
-                    double latitude = jsonObject.optDouble("lat", 0);
-                    double longitude = jsonObject.optDouble("lon", 0);
-                    results.add(new LocationResultt(displayName, latitude, longitude));
+                // Check if the response contains results
+                if (jsonObject.has("results")) {
+                    JSONArray resultsArray = jsonObject.getJSONArray("results");
+
+                    for (int i = 0; i < resultsArray.length(); i++) {
+                        JSONObject resultObject = resultsArray.getJSONObject(i);
+                        JSONObject geometry = resultObject.getJSONObject("geometry");
+                        JSONObject location = geometry.getJSONObject("location");
+                        double latitude = location.optDouble("lat", 0);
+                        double longitude = location.optDouble("lng", 0);
+                        String name = resultObject.optString("name", "");
+                        String address = resultObject.optString("formatted_address", "");
+
+                        // Construct the display name combining name and address if needed
+                        String displayName = name + ", " + address;
+
+                        results.add(new LocationResultt(displayName, latitude, longitude));
+                    }
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -209,24 +226,18 @@ public class MainActivity extends ComponentActivity {
             super.onPostExecute(results);
 
             if (results.size() > 0) {
-                // There are results from Nominatim
-                SearchResultsAdapter adapter = (SearchResultsAdapter) recyclerViewSearchResults.getAdapter();
-                adapter.setData(results);
-
+                // There are results from Google Places
                 Intent intent = new Intent(MainActivity.this, ResultLocation.class);
                 intent.putParcelableArrayListExtra("search_results", results);
                 startActivity(intent);
 
-                // Show a toast indicating that Nominatim is working
-                Toast.makeText(MainActivity.this, "Nominatim is working", Toast.LENGTH_SHORT).show();
+                // Show a toast indicating that Google Places is working
+                Toast.makeText(MainActivity.this, "Google Places is working", Toast.LENGTH_SHORT).show();
             } else {
-                // No results from Nominatim
+                // No results from Google Places
                 Toast.makeText(MainActivity.this, "No results found", Toast.LENGTH_SHORT).show();
             }
         }
-
-
-
     }
 
 }
