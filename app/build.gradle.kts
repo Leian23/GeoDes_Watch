@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -50,4 +51,6 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.11.0")
     implementation ("com.google.android.gms:play-services-location:16.0.0")
     implementation ("com.squareup.picasso:picasso:2.71828")
+    implementation("com.google.firebase:firebase-auth:22.3.0")
+    implementation("com.google.firebase:firebase-firestore:24.9.1")
 }
