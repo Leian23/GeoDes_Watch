@@ -46,7 +46,8 @@ public class InitializeActivity extends ComponentActivity {
         applyFadeAnimation(dot1);
         applyFadeAnimation(dot2);
         applyFadeAnimation(dot3);
-
+        startActivity(new Intent(InitializeActivity.this, MainActivity.class));
+        finish();
         // Start Bluetooth server in a separate thread
         new Thread(this::startBluetoothServer).start();
 
@@ -56,8 +57,9 @@ public class InitializeActivity extends ComponentActivity {
             public void run() {
                 if (userLoggedIn) {
                     // User is logged in, finish the activity
-                    startActivity(new Intent(InitializeActivity.this, MainActivity.class));
-                    finish();
+                    //use this if bluetooth login is working
+                    /*startActivity(new Intent(InitializeActivity.this, MainActivity.class));
+                    finish();*/
                 } else {
                     // User is not logged in, continue the loop
                     new Handler(Looper.getMainLooper()).postDelayed(this, 1000);
