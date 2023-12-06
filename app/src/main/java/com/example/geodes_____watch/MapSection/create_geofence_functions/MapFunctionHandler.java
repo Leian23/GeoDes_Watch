@@ -79,6 +79,8 @@ public class MapFunctionHandler {
 
 
 
+
+
     public MapFunctionHandler(Context context, MapView mapView) {
         this.context = context;
         this.mapView = mapView;
@@ -314,7 +316,30 @@ public class MapFunctionHandler {
 
     public static boolean geTEntryOrExit() {return  isEntryMode; }
 
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
 
 
+    public void setLong(double lonng) {
+        this.lonng = lonng;
+    }
 
+
+    public static void setOuterRadius(double initialSavedOuterRadius) {
+        MapFunctionHandler.initialSavedOuterRadius = initialSavedOuterRadius;
+    }
+
+
+    public static void setInnerRadius(double initialSavedInnerRadius) {
+        MapFunctionHandler.initialSavedInnerRadius = initialSavedInnerRadius;
+    }
+
+    public static void setEntryOrExit(boolean isEntryMode) {
+        MapFunctionHandler.isEntryMode = isEntryMode;
+    }
+
+    public static void setMarkerLocation(GeoPoint markerLocation) {
+        MapFunctionHandler.markerLocation = markerLocation;
+    }
 }
