@@ -1,15 +1,24 @@
 package com.example.geodes_____watch.MapSection;
 
+import static com.google.android.gms.wearable.DataMap.TAG;
+
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,12 +38,19 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.geodes_____watch.AlertSection.addAlertActivity;
 
+import com.example.geodes_____watch.MapSection.create_geofence_functions.GeofenceBroadcastReceiver;
+import com.example.geodes_____watch.MapSection.create_geofence_functions.GeofenceHelper;
 import com.example.geodes_____watch.MapSection.create_geofence_functions.MapFunctionHandler;
 
 import com.example.geodes_____watch.R;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
@@ -47,6 +63,8 @@ import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
@@ -63,7 +81,8 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.Task;
 
-
+import java.util.Collections;
+import java.util.List;
 
 
 public class map_activity extends ComponentActivity {
@@ -102,8 +121,15 @@ public class map_activity extends ComponentActivity {
 
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
-
     private ImageButton addGeofenceButt;
+    private Polygon outerGeofence;
+    private Polygon innerGeofence;
+
+    private GeofencingClient geofencingClient;
+    private GeofenceHelper geofenceHelper;
+
+    private addAlertActivity addgeoAct;
+
 
 
 
@@ -140,31 +166,42 @@ public class map_activity extends ComponentActivity {
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // If not granted, request ACCESS_FINE_LOCATION permission
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-        } else {
-            // Set up location request
-            locationRequest = new LocationRequest();
-            locationRequest.setInterval(10000); // 10 seconds
-            locationRequest.setFastestInterval(5000); // 5 seconds
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-            // Set up location callback
-            locationCallback = new LocationCallback() {
-                @Override
-                public void onLocationResult(LocationResult locationResult) {
-                    if (locationResult == null) {
-                        return;
-                    }
-                    for (Location location : locationResult.getLocations()) {
-                        double latitude = location.getLatitude();
-                        double longitude = location.getLongitude();
-
-
-                        // Do something else with the location if needed (e.g., update UI or send to a server)
-                    }
-                }
-            };
         }
+        else {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "In order for the app to work properly please enable 'Allow all the time'", Toast.LENGTH_SHORT).show();
+                // If not granted, request ACCESS_BACKGROUND_LOCATION permission
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 456);
+            }
+
+
+
+        // Set up location request
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000); // 10 seconds
+        locationRequest.setFastestInterval(5000); // 5 seconds
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        // Set up location callback
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+
+
+                }
+            }
+        };
+    }
+
+
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
 
@@ -172,11 +209,22 @@ public class map_activity extends ComponentActivity {
         checkLocationSettings();
 
 
-
-
-
         double selectedLatitude = getIntent().getDoubleExtra("latitude", 0.0);
         double selectedLongitude = getIntent().getDoubleExtra("longitude", 0.0);
+
+
+        double latitude = getIntent().getDoubleExtra("latitudee", 0.0);
+        double longitude = getIntent().getDoubleExtra("longitudee", 0.0);
+        GeoPoint markerpoint = getIntent().getParcelableExtra("markerlocation");
+        double outerGeo = getIntent().getDoubleExtra("outerRadius", 0.0);
+        double innerGeo = getIntent().getDoubleExtra("innerRadius", 0.0);
+        boolean entryExit = getIntent().getBooleanExtra("entry_Exit", false);
+        String alername = getIntent().getStringExtra("AlertName");
+
+
+
+
+
 
         // Check if the location information is valid
         if (selectedLatitude != 0.0 && selectedLongitude != 0.0) {
@@ -188,12 +236,6 @@ public class map_activity extends ComponentActivity {
         }
 
 
-
-
-
-
-
-
         addGeofenceButt = findViewById(R.id.addGeofenceButton);
         addGeofenceButt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,9 +245,6 @@ public class map_activity extends ComponentActivity {
 
                 RelativeLayout addAlert = findViewById(R.id.addAlertLayout);
                 addAlert.setVisibility(View.GONE);
-
-
-
 
             }
         });
@@ -278,11 +317,29 @@ public class map_activity extends ComponentActivity {
 
                 double latitude = locationHandler.getLat();
                 double longitude = locationHandler.getLong();
+                GeoPoint markerpoint = locationHandler.getMarkerLocation();
+                double outerGeo = locationHandler.getOuterRadius();
+                double innerGeo = locationHandler.getInnerRadius();
+                boolean entryandExit = locationHandler.geTEntryOrExit();
+
 
                 intent.putExtra("lat", latitude);
                 intent.putExtra("lonng", longitude);
+                intent.putExtra("markerloc", (Parcelable) markerpoint);
+                intent.putExtra("outerRad", outerGeo);
+                intent.putExtra("innerRad", innerGeo);
+                intent.putExtra("entryExit", entryandExit);
+
+                Log.d("MapViewDebug", markerpoint + " " + outerGeo + " " + " " + innerGeo + " " + entryandExit);
+                Toast.makeText(map_activity.this, markerpoint + " " + outerGeo + " " + " " + innerGeo + " " + entryandExit , Toast.LENGTH_SHORT).show();
+                locationHandler.dropPinOnMap1();
+
 
                 startActivity(intent);
+
+                finish();
+
+
             }
         });
 
@@ -369,8 +426,6 @@ public class map_activity extends ComponentActivity {
     }
 
 
-
-
     private void setupMyLocationOverlay() {
         MyLocationNewOverlay myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this), mapView);
         myLocationOverlay.enableMyLocation();
@@ -413,9 +468,6 @@ public class map_activity extends ComponentActivity {
         super.onPause();
         mapView.onPause();
     }
-
-
-
 
 
 }

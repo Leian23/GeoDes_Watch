@@ -79,7 +79,7 @@ public class GeofenceSetup {
         }
     }
 
-    private void clearGeofencesAndMarker() {
+    public void clearGeofencesAndMarker() {
         mapView.getOverlayManager().remove(outerGeofence);
         mapView.getOverlayManager().remove(innerGeofence);
         mapView.getOverlays().remove(marker);

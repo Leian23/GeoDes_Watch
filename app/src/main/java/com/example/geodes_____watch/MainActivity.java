@@ -58,7 +58,6 @@ public class MainActivity extends ComponentActivity {
 
         recyclerViewSearchResults = findViewById(R.id.recyclerViewSearchResults);
 
-
         // Set up RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerViewSearchResults.setLayoutManager(layoutManager);
@@ -90,7 +89,7 @@ public class MainActivity extends ComponentActivity {
             @Override
             public void onClick(View v) {
                 // Show the keyboard
-                launchKeyboard();
+                displaySpeechRecognizer();
             }
         });
 
@@ -170,9 +169,7 @@ public class MainActivity extends ComponentActivity {
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Voice search for location");
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
     }
-
-
-
+    
 
 
     private class GooglePlacesTask extends AsyncTask<String, Void, ArrayList<LocationResultt>> {
@@ -181,7 +178,6 @@ public class MainActivity extends ComponentActivity {
             ArrayList<LocationResultt> results = new ArrayList<>();
             OkHttpClient client = new OkHttpClient();
 
-            // Replace "YOUR_GOOGLE_API_KEY" with your actual Google API key
             String apiKey = "AIzaSyA-PwG-IjCROFu9xXBRizCuyz8L83V8Guc";
             String url = "https://maps.googleapis.com/maps/api/place/textsearch/json" +
                     "?query=" + params[0] +

@@ -7,10 +7,12 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -101,6 +103,21 @@
             android:name=".MapSection.search_location.ResultLocation"
             android:exported="false">
         </activity>
+
+
+
+        <receiver
+            android:name=".MapSection.create_geofence_functions.GeofenceBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.example.geodes_mobile.main_app.create_geofence_functions.ACTION_GEOFENCE_TRANSITION"/>
+            </intent-filter>
+        </receiver>
+
+
+
     </application>
+
+
 
 </manifest>

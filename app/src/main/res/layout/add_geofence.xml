@@ -7,8 +7,6 @@
     android:visibility="gone">
 
 
-    <!-- Buttons at the Bottom, Centered -->
-
     <ImageView
         android:id="@+id/additionSymbolImageView"
         android:layout_width="32dp"

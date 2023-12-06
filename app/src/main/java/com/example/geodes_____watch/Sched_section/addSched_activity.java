@@ -53,7 +53,7 @@ public class addSched_activity extends ComponentActivity {
             @Override
             public void onClick(View v) {
                 // Show the keyboard
-                launchKeyboard();
+                displaySpeechRecognizer();
             }
         });
 
@@ -88,8 +88,6 @@ public class addSched_activity extends ComponentActivity {
             @Override
             public void onClick(View view) {onBackPressed();}
         });
-
-
 
 
     }
