@@ -136,7 +136,7 @@ public class addAlertActivity extends ComponentActivity {
                 String outerCode = geofenceHelper.OuterVal();
                 String innerCode = geofenceHelper.innerVal();
                 boolean alertEnabled = true;
-                String isEntryorExit = "false";
+                boolean isEntryorExit = false;
                 String currentUser = "yow@gmail.com";
                 saveAlertToFirestore(currentUser, enteredText, retrievedGeoPoint, outer, inner, outerCode, innerCode, notesText, alertEnabled, isEntryorExit);
 
@@ -367,7 +367,7 @@ public class addAlertActivity extends ComponentActivity {
         return true;
     }
 
-    private void saveAlertToFirestore(String currentUser, String AlertName, GeoPoint Point, float outRadius, float innRadius, String outerCode, String innerCode, String Notes, boolean alertenabled, String isEntry) {
+    private void saveAlertToFirestore(String currentUser, String AlertName, GeoPoint Point, float outRadius, float innRadius, String outerCode, String innerCode, String Notes, boolean alertenabled, boolean isEntry) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         currentUser = "yow@gmail.com";
 
