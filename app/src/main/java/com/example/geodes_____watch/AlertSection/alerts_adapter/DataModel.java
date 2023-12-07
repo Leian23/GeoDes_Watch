@@ -11,14 +11,20 @@ public class DataModel {
 
     private int alertPref;
 
-    public DataModel(String TitleAlerts, String NotesAlerts,int Imgcalendar, int pinIcon, boolean alertSwitch, int alertPref  ) {
+    private double latitude;
+    private double longitude;
+    private String uid;
+
+    public DataModel(String TitleAlerts, String NotesAlerts,int Imgcalendar, int pinIcon, boolean alertSwitch, int alertPref, double latitude, double longitude, String uid) {
         this.TitleAlerts = TitleAlerts;
         this.NotesAlerts = NotesAlerts;
         this.Imgcalendar = Imgcalendar;
         this.pinIcon = pinIcon;
-        this.ListAlarms = ListAlarms;
         this.alertSwitch = alertSwitch;
         this.alertPref = alertPref;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.uid = uid;
     }
 
     public String getTitleAlerts() {
@@ -29,13 +35,24 @@ public class DataModel {
     }
     public int getImgcalendar() { return Imgcalendar; }
     public int getPinIcon() { return pinIcon; }
-    public String getListAlarms() { return ListAlarms; }
     public int getAlertPref() {return alertPref;}
     public boolean getAlertSwitch1() { return alertSwitch; }
 
-    // Add setters for other fields if needed
 
     public void setAlertSwitch1(boolean alertSwitch) {
         this.alertSwitch = alertSwitch;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+
+    }
+
+    public String getUid() {
+        return uid;
     }
 }

@@ -17,6 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AlertsActivity extends ComponentActivity implements Adapter.OnItemClickListener {
 
@@ -84,6 +85,15 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
             String notes = document.getString("notes");
             Boolean EntryExit = document.getBoolean("EntryType");
             Boolean alertEnabled = document.getBoolean("alertEnabled");
+            String uniID = document.getString("uniqueID");
+
+
+            Map<String, Object> location = (Map<String, Object>) document.get("location");
+
+                Double latitude = (Double) location.get("latitude");
+                Double longitude = (Double) location.get("longitude");
+
+
 
             int alertStat;
 
@@ -93,13 +103,28 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
                 alertStat = R.drawable.exit;
             }
             // Create a DataModel object and add it to the list
-            dataList.add(new DataModel(alertName, notes, R.drawable.baseline_calendar_month_24, R.drawable.baseline_location_on_24, alertEnabled, alertStat));
+            dataList.add(new DataModel(alertName, notes, R.drawable.baseline_calendar_month_24, R.drawable.baseline_location_on_24, alertEnabled, alertStat, latitude, longitude, uniID));
         }
     }
 
     @Override
     public void onItemClick(DataModel data) {
         Intent intent = new Intent(AlertsActivity.this, ViewAlertAct.class);
+
+
+        String name = data.getTitleAlerts();
+        String notes = data.getNotesAlerts();
+        double getLat = data.getLatitude();
+        double getLong = data.getLongitude();
+        String UserID = data.getUid();
+
+
+        intent.putExtra("name1", name);
+        intent.putExtra("notes1", notes);
+        intent.putExtra("latitude1", getLat);
+        intent.putExtra("longitude1", getLong);
+        intent.putExtra("UserId", UserID);
+
         startActivity(intent);
     }
 }

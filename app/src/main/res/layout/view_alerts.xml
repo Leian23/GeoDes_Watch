@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/TitleAlert"
+            android:id="@+id/TitleAlertName"
             android:layout_width="wrap_content"
             android:layout_height="23dp"
             android:text="Office"
@@ -33,20 +33,125 @@
 
 
             <FrameLayout
-                android:id="@+id/WeatherInfo"
-                android:layout_width="0dp"
-                android:layout_height="65dp"
+                android:id="@+id/WeatherView2"
+                android:layout_width="115dp"
+                android:layout_height="68dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/round_corner_notes"
-                android:onClick="onVoiceSearchButtonClick"
+                android:paddingLeft="5dp"
                 android:text="Schedules"
                 android:textAllCaps="false"
                 android:textSize="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.166"
+                app:layout_constraintHorizontal_bias="0.10"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.50" />
+                app:layout_constraintWidth_percent="0.60">
+
+
+                <FrameLayout
+                    android:id="@+id/idLoad2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible">
+
+                    <ProgressBar
+                        android:id="@+id/progressBar2"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="35dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:indeterminateTint="#737373" />
+
+                    <TextView
+                        android:id="@+id/textFetching2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="30dp"
+                        android:gravity="center"
+                        android:text="Fetching Weather..."
+                        android:textSize="14sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/NotAvail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/imageView82"
+                        android:layout_width="30dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="12dp"
+                        android:src="@drawable/wifi_off" />
+
+                    <TextView
+                        android:id="@+id/NoIntnet2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="30dp"
+                        android:gravity="center"
+                        android:text="Connection Problem"
+                        android:textSize="14sp" />
+                </FrameLayout>
+
+                <RelativeLayout
+                    android:id="@+id/infoLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/weatherIconImageView2"
+                        android:layout_width="38dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="101dp"
+                        android:layout_marginBottom="13dp" />
+
+                    <TextView
+                        android:id="@+id/weatherTemp2"
+                        android:layout_width="94dp"
+                        android:layout_height="57dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginEnd="23dp"
+                        android:layout_marginBottom="31dp"
+                        android:gravity="center"
+                        android:text="27.0 C"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/weatherCon2"
+                        android:layout_width="75dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="29dp"
+                        android:layout_marginEnd="14dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Partly Cloudy"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
+            </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/alertInfo"
@@ -60,7 +165,7 @@
                 android:textSize="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.180"
-                app:layout_constraintStart_toEndOf="@+id/WeatherInfo"
+                app:layout_constraintStart_toEndOf="@+id/WeatherView2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.30">
 
@@ -111,7 +216,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/Coordinates"
+                android:id="@+id/Coordinatess"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -136,28 +241,30 @@
                 android:id="@+id/alarms"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="175dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/round_corner_notes"
                 android:onClick="onVoiceSearchButtonClick"
                 android:text="Schedules"
                 android:textAllCaps="false"
+                android:paddingTop="5dp"
+                android:paddingBottom ="5dp"
                 android:textSize="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/Coordinatess"
                 app:layout_constraintWidth_percent="0.80">
 
                 <!-- ImageView to display the image -->
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/baseline_access_alarm_24"
+                    android:src="@drawable/baseline_note_24"
                     android:layout_marginEnd="60dp"
                     android:layout_gravity="center"
                     android:scaleType="fitCenter" />
 
                 <TextView
-                    android:id="@+id/listAlerts"
+                    android:id="@+id/NotesInfo"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:text="hello, ijdsid, idjsdks, isdjsidj, duhdha,ijdiadji,adhadh"
@@ -170,12 +277,7 @@
                     android:scaleType="fitCenter" />
             </FrameLayout>
 
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
         <LinearLayout
@@ -188,7 +290,7 @@
 
 
             <ImageButton
-                android:id="@+id/confirmAlert"
+                android:id="@+id/deleteAlert"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
