@@ -53,7 +53,7 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
 
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     // Extract data and create DataModel objects
-                    String alertName = document.getString("title");
+                    String alertName = document.getString("alertName");
                     String notes = document.getString("notes");
                     // Add other fields as needed
 
