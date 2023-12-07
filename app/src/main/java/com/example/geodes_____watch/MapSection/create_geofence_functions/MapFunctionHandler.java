@@ -73,6 +73,10 @@ public class MapFunctionHandler {
 
     private static GeoPoint markerLocation;
 
+    private static boolean isAlertEnabled = false;
+
+
+
 
 
 
@@ -226,12 +230,12 @@ public class MapFunctionHandler {
 
         mapView.invalidate();
 
-         lat = geoPoint.getLatitude();
-         lonng = geoPoint.getLongitude();
-         getpoint(geoPoint);
-         ((map_activity) context).hideElements();
-         RelativeLayout showAddLayout = ((map_activity) context).findViewById(R.id.add_cancel_layout);
-         showAddLayout.setVisibility(View.VISIBLE);
+        lat = geoPoint.getLatitude();
+        lonng = geoPoint.getLongitude();
+        getpoint(geoPoint);
+        ((map_activity) context).hideElements();
+        RelativeLayout showAddLayout = ((map_activity) context).findViewById(R.id.add_cancel_layout);
+        showAddLayout.setVisibility(View.VISIBLE);
 
     }
 
@@ -314,7 +318,32 @@ public class MapFunctionHandler {
 
     public static boolean geTEntryOrExit() {return  isEntryMode; }
 
+    public static boolean getIsAlertEnabled() {return isAlertEnabled;}
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
 
 
+    public void setLong(double lonng) {
+        this.lonng = lonng;
+    }
 
+
+    public static void setOuterRadius(double initialSavedOuterRadius) {
+        MapFunctionHandler.initialSavedOuterRadius = initialSavedOuterRadius;
+    }
+
+
+    public static void setInnerRadius(double initialSavedInnerRadius) {
+        MapFunctionHandler.initialSavedInnerRadius = initialSavedInnerRadius;
+    }
+
+    public static void setEntryOrExit(boolean isEntryMode) {
+        MapFunctionHandler.isEntryMode = isEntryMode;
+    }
+
+    public static void setMarkerLocation(GeoPoint markerLocation) {
+        MapFunctionHandler.markerLocation = markerLocation;
+    }
 }

@@ -139,8 +139,6 @@ public class map_activity extends ComponentActivity {
         Configuration.getInstance().load(getApplicationContext(), getPreferences(MODE_PRIVATE));
         setContentView(R.layout.watch_mapview);
 
-
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         mapView = findViewById(R.id.ViewMap);
@@ -226,11 +224,11 @@ public class map_activity extends ComponentActivity {
 
 
 
-        // Check if the location information is valid
+        // Check if the location information is valid, this one is for getting the getting checking if the
+        //selected latitude and longitude is available from the input extra coming from resultLocation class
         if (selectedLatitude != 0.0 && selectedLongitude != 0.0) {
             // Create a GeoPoint from the selected location
             GeoPoint selectedLocation = new GeoPoint(selectedLatitude, selectedLongitude);
-
             // Drop a pin on the selected location
             locationHandler.dropPinOnMap(selectedLocation);
         }
@@ -260,8 +258,6 @@ public class map_activity extends ComponentActivity {
                     onBackPressed();
             }
         });
-
-
 
 
 
