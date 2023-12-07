@@ -83,6 +83,8 @@ public class MapFunctionHandler {
 
 
 
+
+
     public MapFunctionHandler(Context context, MapView mapView) {
         this.context = context;
         this.mapView = mapView;
@@ -230,12 +232,12 @@ public class MapFunctionHandler {
 
         mapView.invalidate();
 
-        lat = geoPoint.getLatitude();
-        lonng = geoPoint.getLongitude();
-        getpoint(geoPoint);
-        ((map_activity) context).hideElements();
-        RelativeLayout showAddLayout = ((map_activity) context).findViewById(R.id.add_cancel_layout);
-        showAddLayout.setVisibility(View.VISIBLE);
+         lat = geoPoint.getLatitude();
+         lonng = geoPoint.getLongitude();
+         getpoint(geoPoint);
+         ((map_activity) context).hideElements();
+         RelativeLayout showAddLayout = ((map_activity) context).findViewById(R.id.add_cancel_layout);
+         showAddLayout.setVisibility(View.VISIBLE);
 
     }
 
@@ -318,7 +320,7 @@ public class MapFunctionHandler {
 
     public static boolean geTEntryOrExit() {return  isEntryMode; }
 
-    public static boolean getIsAlertEnabled() {return isAlertEnabled;}
+
 
     public void setLat(double lat) {
         this.lat = lat;

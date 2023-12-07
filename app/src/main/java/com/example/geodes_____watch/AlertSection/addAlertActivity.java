@@ -136,10 +136,8 @@ public class addAlertActivity extends ComponentActivity {
                 String outerCode = geofenceHelper.OuterVal();
                 String innerCode = geofenceHelper.innerVal();
                 String ExitCode = geofenceHelper.generateRequestId();
-                boolean alertEnabled = true;
+                boolean alertEnabled = false;
                 boolean isEntryorExit = MapFunctionHandler.geTEntryOrExit();
-                boolean isALertEnabled = MapFunctionHandler.getIsAlertEnabled();
-
 
 
                 String currentUser = "yow@gmail.com";
