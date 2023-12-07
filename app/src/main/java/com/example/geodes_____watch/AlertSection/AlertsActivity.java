@@ -8,8 +8,8 @@ import androidx.wear.widget.WearableRecyclerView;
 import com.example.geodes_____watch.R;
 import com.example.geodes_____watch.AlertSection.alerts_adapter.Adapter;
 import com.example.geodes_____watch.AlertSection.alerts_adapter.DataModel;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -22,7 +22,6 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
 
     private List<DataModel> dataList;
     private Adapter adapter;
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firestore;
 
     @Override
@@ -31,54 +30,76 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
         setContentView(R.layout.activity_alerts);
 
         dataList = new ArrayList<>();
-        adapter = new Adapter(dataList, this);
-
-        WearableRecyclerView recyclerView = findViewById(R.id.viewerAlerts);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(adapter);
-        recyclerView.setEdgeItemsCenteringEnabled(false);
-
         firestore = FirebaseFirestore.getInstance();
 
         String userEmail = "yow@gmail.com";
 
-// Assuming "users" is the collection name in Firestore
-        CollectionReference usersCollection = firestore.collection("geofencesEntry");
+        // Assuming "users" is the collection name in Firestore
+        CollectionReference entryCollection = firestore.collection("geofencesEntry");
+        CollectionReference exitCollection = firestore.collection("geofencesExit");
 
-        Query query = usersCollection.whereEqualTo("email", userEmail);
+        Query entryQuery = entryCollection.whereEqualTo("email", userEmail);
+        Query exitQuery = exitCollection.whereEqualTo("email", userEmail);
 
-        query.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                dataList.clear(); // Clear existing data
+        // Combine both queries using Tasks.whenAllSuccess
+        Task<QuerySnapshot> entryTask = entryQuery.get();
+        Task<QuerySnapshot> exitTask = exitQuery.get();
 
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    // Extract data and create DataModel objects
-                    String alertName = document.getString("alertName");
-                    String notes = document.getString("notes");
-                    // Add other fields as needed
+        Tasks.whenAllSuccess(entryTask, exitTask)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        dataList.clear(); // Clear existing data
 
-                    // Create a DataModel object and add it to the list
-                    dataList.add(new DataModel(alertName, notes, R.drawable.baseline_calendar_month_24,
-                            "Mon, Tue, Wed", R.drawable.baseline_location_on_24, "Alert#1, Alert2, Alert3", true, R.drawable.entry));
-                }
+                        // Process geofencesEntry data
+                        QuerySnapshot entrySnapshot = (QuerySnapshot) task.getResult().get(0);
+                        processSnapshot(entrySnapshot);
 
-                // Notify the adapter that the data set has changed
-                adapter.notifyDataSetChanged();
+                        // Process geofencesExit data
+                        QuerySnapshot exitSnapshot = (QuerySnapshot) task.getResult().get(1);
+                        processSnapshot(exitSnapshot);
+
+                        // Notify the adapter that the data set has changed
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        // Handle errors
+                        Exception exception = task.getException();
+                        if (exception != null) {
+                            // Handle the exception
+                        }
+                    }
+                });
+
+        adapter = new Adapter(dataList, this, firestore);
+        adapter.setOnItemClickListener(this); // Set the listener
+        WearableRecyclerView recyclerView = findViewById(R.id.viewerAlerts);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setEdgeItemsCenteringEnabled(false);
+    }
+
+    private void processSnapshot(QuerySnapshot snapshot) {
+        for (QueryDocumentSnapshot document : snapshot) {
+            // Extract data and create DataModel objects
+            String alertName = document.getString("alertName");
+            String notes = document.getString("notes");
+            Boolean EntryExit = document.getBoolean("EntryType");
+            Boolean alertEnabled = document.getBoolean("alertEnabled");
+
+            int alertStat;
+
+            if(EntryExit) {
+                alertStat = R.drawable.entry;
             } else {
-                // Handle errors
-                Exception exception = task.getException();
-                if (exception != null) {
-                    // Handle the exception
-                }
+                alertStat = R.drawable.exit;
             }
-        });
-
+            // Create a DataModel object and add it to the list
+            dataList.add(new DataModel(alertName, notes, R.drawable.baseline_calendar_month_24, R.drawable.baseline_location_on_24, alertEnabled, alertStat));
+        }
     }
 
     @Override
     public void onItemClick(DataModel data) {
         Intent intent = new Intent(AlertsActivity.this, ViewAlertAct.class);
-        // You can pass data to the next activity using intent.putExtra if needed
         startActivity(intent);
     }
 }

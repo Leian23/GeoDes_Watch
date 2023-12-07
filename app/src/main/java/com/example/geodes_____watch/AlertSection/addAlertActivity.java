@@ -246,8 +246,6 @@ public class addAlertActivity extends ComponentActivity {
 
 
 
-
-
     private void updateWeatherView(GeoPoint geoPoint) {
         new Thread(() -> {
             try {
@@ -373,7 +371,6 @@ public class addAlertActivity extends ComponentActivity {
             e.printStackTrace();
         }
 
-        // Default to considering it as daytime in case of errors
         return true;
     }
 
