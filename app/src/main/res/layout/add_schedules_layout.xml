@@ -146,6 +146,7 @@
                 android:layout_marginRight="15dp"/>
 
             <ImageButton
+                android:id="@+id/confirmSched"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
