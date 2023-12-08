@@ -26,6 +26,7 @@ import com.example.geodes_____watch.MapSection.create_geofence_functions.Geofenc
 import com.example.geodes_____watch.MapSection.create_geofence_functions.MapFunctionHandler;
 import com.example.geodes_____watch.MapSection.map_activity;
 import com.example.geodes_____watch.R;
+import com.example.geodes_____watch.Sched_section.addSched_activity;
 import com.example.geodes_____watch.showVoiceText;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -127,35 +128,43 @@ public class addAlertActivity extends ComponentActivity {
         saveAlertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GeoPoint retrievedGeoPoint = MapFunctionHandler.getMarkerLocation();
-                float outer = (float) MapFunctionHandler.getOuterRadius();
-                float inner = (float) MapFunctionHandler.getInnerRadius();
-                String enteredText = alertTitle.getText().toString();
-                String notesText =  notes.getText().toString();
 
-                String outerCode = geofenceHelper.OuterVal();
-                String innerCode = geofenceHelper.innerVal();
-                String ExitCode = geofenceHelper.generateRequestId();
-                boolean alertEnabled = false;
-                boolean isEntryorExit = MapFunctionHandler.geTEntryOrExit();
-
-
-                String currentUser = "yow@gmail.com";
-
-
-                if (isEntryorExit) {
-                    saveEntryAlertToFirestore(currentUser, enteredText, retrievedGeoPoint, outer, inner, outerCode, innerCode, notesText, alertEnabled, isEntryorExit);
-                } else if (!isEntryorExit) {
-                    saveExitGeofenceDataToFirestore(currentUser, enteredText, retrievedGeoPoint,outer, ExitCode, notesText, alertEnabled, isEntryorExit);
+                if ("Name".equals(alertTitle.getText().toString())||"".equals(alertTitle.getText().toString())){
+                    Toast.makeText(addAlertActivity.this, "Please enter an alert name", Toast.LENGTH_SHORT).show();
                 }
+                else {
+                    GeoPoint retrievedGeoPoint = MapFunctionHandler.getMarkerLocation();
+                    float outer = (float) MapFunctionHandler.getOuterRadius();
+                    float inner = (float) MapFunctionHandler.getInnerRadius();
+                    String enteredText = alertTitle.getText().toString();
+                    String notesText = notes.getText().toString();
+
+                    String outerCode = geofenceHelper.OuterVal();
+                    String innerCode = geofenceHelper.innerVal();
+                    String ExitCode = geofenceHelper.generateRequestId();
+                    boolean alertEnabled = false;
+                    boolean isEntryorExit = MapFunctionHandler.geTEntryOrExit();
 
 
-                Intent intent = new Intent(addAlertActivity.this,map_activity.class);
-                startActivity(intent);
+                    String currentUser = "yow@gmail.com";
 
-                alertTitle.setText("");
-                notes.setText("");
-                coord.setText("");
+
+                    if (isEntryorExit) {
+                        saveEntryAlertToFirestore(currentUser, enteredText, retrievedGeoPoint, outer, inner, outerCode, innerCode, notesText, alertEnabled, isEntryorExit);
+                    } else if (!isEntryorExit) {
+                        saveExitGeofenceDataToFirestore(currentUser, enteredText, retrievedGeoPoint, outer, ExitCode, notesText, alertEnabled, isEntryorExit);
+                    }
+
+
+                    Intent intent = new Intent(addAlertActivity.this, map_activity.class);
+                    startActivity(intent);
+
+                    alertTitle.setText("");
+                    notes.setText("");
+                    coord.setText("");
+
+                    finish();
+                }
             }
         });
 
