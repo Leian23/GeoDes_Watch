@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="HELP"
+                android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/titleMainActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Main Screen"
+                android:layout_below="@id/help"
+                android:textSize="16sp"
+                android:lineSpacingExtra="4sp"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <!-- ImageView -->
+            <ImageView
+                android:id="@+id/mainActivityImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginBottom="8dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/titleMainActivity"
+                android:scaleType="centerCrop"
+                android:src="@drawable/main_activity_help_image" />
+
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/mainScreenText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mainActivityImage"
+                android:padding="8dp"
+                android:text="The main screen offers different buttons directing to each activities you need, you can navigate to schedules, alerts, settings, and map."
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"/>
+
+            <TextView
+                android:id="@+id/titleSavingAlerts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Map"
+                android:layout_below="@id/mainScreenText"
+                android:textSize="16sp"
+                android:lineSpacingExtra="4sp"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <ImageView
+                android:id="@+id/alertSavingImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/titleSavingAlerts"
+                android:scaleType="centerCrop"
+                android:src="@drawable/alert_saving_map"/>
+            <TextView
+                android:id="@+id/mapText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/alertSavingImage"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"
+                android:text="After clicking the map and navigating through it you will see three buttons, each one has different functionalities.
+                 If you want to locate where you are at, you will have to click the middle button below, if you want to go back to the main screen then you will have to click the right button with the 'x' mark.
+                We will now learn how to save an alert by clicking the button in the left."/>
+
+            <TextView
+                android:id="@+id/titlePinAlerts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Saving of Alerts"
+                android:layout_below="@id/mapText"
+                android:textSize="16sp"
+                android:lineSpacingExtra="4sp"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <ImageView
+                android:id="@+id/pinAlertImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/titlePinAlerts"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pin_alert_map"/>
+            <TextView
+                android:id="@+id/pinAlertText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pinAlertImage"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"
+                android:text="Once the bottom left button has been clicked, a pin will appear which you will drag to your desired destination.
+You may also search the location by going back to the main screen and clicking the keyboard or mic icon on the top side. Once you have pinned
+a place, you will then have to choose whether your alert will notify when you enter or exit your destination by clicking the middle button on it."/>
+
+            <ImageView
+                android:id="@+id/entryAlertImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/pinAlertText"
+                android:scaleType="centerCrop"
+                android:src="@drawable/entry_alert_image"
+                android:layout_marginBottom="10dp"/>
+            <ImageView
+                android:id="@+id/exitAlertImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/entryAlertImage"
+                android:scaleType="centerCrop"
+                android:src="@drawable/exit_alert_image"/>
+            <TextView
+                android:id="@+id/pinAlertText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/exitAlertImage"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"
+                android:text="If you have chosen a place and which type do you want for your alert, you will have to click the bottom left button with the
+'+' sign. It will direct you to where you are going to enter your alert name and your desired note for your alert, you will also see the current weather and coordinates of
+ your pinned location."/>
+            <ImageView
+                android:id="@+id/alertSavingAct"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/pinAlertText2"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/alert_saving_act_one"/>
+            <ImageView
+                android:id="@+id/alertSavingActNote"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/alertSavingAct"
+                android:scaleType="centerCrop"
+                android:src="@drawable/alert_saving_act_note_one"/>
+            <TextView
+                android:id="@+id/pinAlertTextAddText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/alertSavingActNote"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"
+                android:text="You may specify which method you will use in entering your alert name and notes by clicking the keyboard and
+the mic button. Once all the fields have been filled up, it should look like this."/>
+            <ImageView
+                android:id="@+id/alertSavingName"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/pinAlertTextAddText"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/alert_saving_act_name_sample"/>
+            <ImageView
+                android:id="@+id/alertSavingNoteSample"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/alertSavingName"
+                android:scaleType="centerCrop"
+                android:src="@drawable/alert_saving_note_sample"/>
+            <TextView
+                android:id="@+id/pinAlertTextAddTextFinal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/alertSavingNoteSample"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"
+                android:text="For the final part, you will then click the save button which you will se by scrolling at the far bottom of the screen.
+It will also indicate that the alert has been saved."/>
+            <ImageView
+                android:id="@+id/alertSavedSuccessful"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/pinAlertTextAddTextFinal"
+                android:scaleType="centerCrop"
+                android:src="@drawable/alert_saved_successful"/>
+            <TextView
+                android:id="@+id/viewingAndEnabling"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Viewing and Enabling of Alerts"
+                android:layout_below="@id/alertSavedSuccessful"
+                android:textSize="16sp"
+                android:lineSpacingExtra="4sp"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+            <TextView
+                android:id="@+id/viewAlert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/viewingAndEnabling"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"
+                android:text="Go back to the main screen and click the button that specify 'Alerts'. There, you can see all the alerts you
+have saved so far whether it is on your phone or your watch. You may also enable the alert by clicking the toggle button on the top right of the list."/>
+            <ImageView
+                android:id="@+id/viewingAndEnablingImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/viewAlert"
+                android:scaleType="centerCrop"
+                android:src="@drawable/view_enabling_image"/>
+            <TextView
+                android:id="@+id/schedulingAndSaving"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Schedules"
+                android:layout_below="@id/viewingAndEnablingImage"
+                android:textSize="16sp"
+                android:lineSpacingExtra="4sp"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+            <TextView
+                android:id="@+id/scheduleListing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/schedulingAndSaving"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"
+                android:text="To navigate to your schedules, go back to the main screen and click the 'schedules' button. It will direct you to your list of schedules, enable schedules
+and save a new schedule."/>
+            <ImageView
+                android:id="@+id/scheduleListingImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/scheduleListing"
+                android:scaleType="centerCrop"
+                android:src="@drawable/schedule_listing_help"/>
+            <TextView
+                android:id="@+id/scheduleSavingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/scheduleListingImage"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"
+                android:text="In order for you to add a new schedule, scroll down until you see a '+' button, it will then direct you to another screen
+where you will enter your schedule name, pick which alert/s you want to schedule, choose what time it should enable the alert, and which days it should repeat the alerts
+\nNote: You may choose multiple saved alerts for your specific schedule. \n Below is what it should look like without entering all of the requirements for your schedule."/>
+            <ImageView
+                android:id="@+id/scheduleSavingEmptyName"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/scheduleSavingText"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/save_schedule_name_empty"/>
+            <ImageView
+                android:id="@+id/scheduleThreeButtonSave"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/scheduleSavingEmptyName"
+                android:scaleType="centerCrop"
+                android:src="@drawable/schedule_three_buttons"/>
+            <TextView
+                android:id="@+id/scheduleCompleteDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/scheduleThreeButtonSave"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"
+                android:text="Below is what is should look like when all of the requirements are filled."/>
+            <ImageView
+                android:id="@+id/scheduleSavingName"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/scheduleCompleteDetails"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/schedule_complete_name"/>
+            <ImageView
+                android:id="@+id/scheduleThreeButtonSaveComplete"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/scheduleSavingName"
+                android:scaleType="centerCrop"
+                android:src="@drawable/schedule_complete_three"/>
+            <TextView
+                android:id="@+id/scheduleCompleteDetailsSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/scheduleThreeButtonSaveComplete"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"
+                android:text="When saving the sched, scroll down until you see the add button and click it. It will show once the schedule has been saved."/>
+            <ImageView
+                android:id="@+id/scheduleSavingComplete"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/scheduleCompleteDetailsSave"
+                android:scaleType="centerCrop"
+                android:src="@drawable/schedule_complete_save"/>
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
