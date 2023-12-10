@@ -438,7 +438,7 @@ public class addAlertActivity extends ComponentActivity {
         geofenceData.put("notes", Notes);
         geofenceData.put("location",Point);
         geofenceData.put("outerRadius",outRadius);
-        geofenceData.put("outerCode", ExitCode);
+        geofenceData.put("exitCode", ExitCode);
         geofenceData.put("alertEnabled", alertenabled);
         geofenceData.put("EntryType", isExit);
 

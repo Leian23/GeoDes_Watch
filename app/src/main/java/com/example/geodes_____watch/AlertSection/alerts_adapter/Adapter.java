@@ -1,6 +1,7 @@
 package com.example.geodes_____watch.AlertSection.alerts_adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.wear.widget.WearableRecyclerView;
 
+import com.example.geodes_____watch.AlertSection.AlertsActivity;
 import com.example.geodes_____watch.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import org.osmdroid.util.GeoPoint;
 
 import java.util.List;
 
@@ -24,10 +28,15 @@ public class Adapter extends WearableRecyclerView.Adapter<Adapter.ViewHolder> {
     private OnItemClickListener listener;
     private FirebaseFirestore firestore;
 
-    public Adapter(List<DataModel> dataList, Context context, FirebaseFirestore firestore) {
+    private AlertsActivity alertsActivity;
+
+    public Adapter(List<DataModel> dataList, Context context, FirebaseFirestore firestore, AlertsActivity alertsActivity) {
         this.dataList = dataList;
         this.context = context;
         this.firestore = firestore;
+        this.alertsActivity = alertsActivity;
+
+
     }
 
     @NonNull
@@ -43,7 +52,51 @@ public class Adapter extends WearableRecyclerView.Adapter<Adapter.ViewHolder> {
         holder.bind(data);
 
         holder.alertSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // Handle switch state change
+
+
+            if(isChecked) {
+                GeoPoint Point = new GeoPoint(data.getLatitude(), data.getLongitude());
+
+                if (data.getEntryExit()) {
+                    alertsActivity.addGeofence(Point, data.getOuterRadius(), data.getOuterCode(), data.getTitleAlerts(),true);
+                    alertsActivity.addGeofence(Point, data.getInnerradius(), data.getInnerCode(), data.getTitleAlerts(), true);
+
+                    Log.d("GeofenceLog", "Adding outer geofence: " +
+                            "Point: " + Point +
+                            ", OuterRadius: " + data.getOuterRadius() +
+                            ", OuterCode: " + data.getOuterCode() +
+                            ", AlertName: " + data.getTitleAlerts() +
+                            ", Enabled: true");
+
+                    Log.d("GeofenceLog", "Adding inner geofence: " +
+                            "Point: " + Point +
+                            ", OuterRadius: " + data.getInnerradius() +
+                            ", InnerCode: " + data.getInnerCode() +
+                            ", AlertName: " + data.getTitleAlerts() +
+                            ", Enabled: true");
+
+
+                } else {
+                   alertsActivity.addGeofence(Point, data.getOuterRadius(), data.getExitCode(), data.getTitleAlerts(),false);
+
+                    Log.d("GeofenceLog", "Adding outer geofence: " +
+                            "Point: " + Point +
+                            ", OuterRadius: " + data.getOuterRadius() +
+                            ", OuterCode: " + data.getExitCode() +
+                            ", AlertName: " + data.getTitleAlerts() +
+                            ", Enabled: true");
+                }
+
+            } else if (!isChecked) {
+                if (data.getEntryExit()) {
+                    alertsActivity.clearGeo(data.getInnerCode(), data.getOuterCode());
+                } else {
+                    alertsActivity.removeGeofence(data.getExitCode());
+                }
+            }
+            // Save the updated state to Firestore or perform other actions
+
+
             data.setAlertSwitch1(isChecked);
             updateAlertSwitchInFirestore(data.getTitleAlerts(), isChecked);
         });

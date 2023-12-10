@@ -15,7 +15,18 @@ public class DataModel {
     private double longitude;
     private String uid;
 
-    public DataModel(String TitleAlerts, String NotesAlerts,int Imgcalendar, int pinIcon, boolean alertSwitch, int alertPref, double latitude, double longitude, String uid) {
+    private Boolean EntryExit;
+
+    private Float outerRadius;
+    private Float innerradius;
+
+    private String innerCode;
+
+    private String outerCode;
+
+    private String ExitCode;
+
+    public DataModel(String TitleAlerts, String NotesAlerts,int Imgcalendar, int pinIcon, boolean alertSwitch, int alertPref, double latitude, double longitude, String uid, Boolean EntryExit, Float outerRadius, Float innerradius, String outerCode, String innerCode, String ExitCode) {
         this.TitleAlerts = TitleAlerts;
         this.NotesAlerts = NotesAlerts;
         this.Imgcalendar = Imgcalendar;
@@ -25,6 +36,13 @@ public class DataModel {
         this.latitude = latitude;
         this.longitude = longitude;
         this.uid = uid;
+        this.EntryExit = EntryExit;
+        this.outerRadius = outerRadius;
+        this.innerradius = innerradius;
+        this.outerCode = outerCode;
+        this.innerCode = innerCode;
+        this.ExitCode = ExitCode;
+
     }
 
     public String getTitleAlerts() {
@@ -54,5 +72,29 @@ public class DataModel {
 
     public String getUid() {
         return uid;
+    }
+
+    public Boolean getEntryExit() {
+        return EntryExit;
+    }
+
+    public Float getInnerradius() {
+        return innerradius;
+    }
+
+    public Float getOuterRadius() {
+        return outerRadius;
+    }
+
+    public String getOuterCode() {
+        return outerCode;
+    }
+
+    public String getInnerCode() {
+        return innerCode;
+    }
+
+    public String getExitCode() {
+        return ExitCode;
     }
 }
