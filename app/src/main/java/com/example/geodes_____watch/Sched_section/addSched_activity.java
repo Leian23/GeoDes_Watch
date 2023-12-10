@@ -43,6 +43,7 @@ public class addSched_activity extends ComponentActivity {
     private Button RepeatSchedd;
     private TextView scheduleTitle;
     private GeofenceHelper geofenceHelper = new GeofenceHelper();
+    boolean monday, tuesday,wednesday,thursday,friday,saturday,sunday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,7 @@ public class addSched_activity extends ComponentActivity {
 
                     Intent intent = new Intent(addSched_activity.this, ScheduleActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -115,8 +117,22 @@ public class addSched_activity extends ComponentActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(addSched_activity.this, RepeatAlertActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
+        RepeatSchedd.setText("Repeat");
+        // Retrieve the values from the Intent
+        Intent intent = getIntent();
+
+        monday = intent.getBooleanExtra("monday", false);
+        tuesday = intent.getBooleanExtra("tuesday", false);
+        wednesday = intent.getBooleanExtra("wednesday", false);
+        thursday = intent.getBooleanExtra("thursday", false);
+        friday = intent.getBooleanExtra("friday", false);
+        saturday = intent.getBooleanExtra("saturday", false);
+        sunday = intent.getBooleanExtra("sunday", false);
+
+        updateRepeatSchedButtonText(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
 
         discardAddSched = findViewById(R.id.discardAdd);
         discardAddSched.setOnClickListener(new View.OnClickListener() {
@@ -196,16 +212,14 @@ public class addSched_activity extends ComponentActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         //temporary constant user, replace when auth is integrated
         currentUser = "yow@gmail.com";
+        boolean monday2 = monday;
+        boolean tuesday2 = tuesday;
+        boolean wednesday2 = wednesday;
+        boolean thursday2 = thursday;
+        boolean friday2 = friday;
+        boolean saturday2 = saturday;
+        boolean sunday2 = sunday;
 
-        // Retrieve the values from the Intent
-        Intent intent = getIntent();
-        boolean monday = intent.getBooleanExtra("monday", false);
-        boolean tuesday = intent.getBooleanExtra("tuesday", false);
-        boolean wednesday = intent.getBooleanExtra("wednesday", false);
-        boolean thursday = intent.getBooleanExtra("thursday", false);
-        boolean friday = intent.getBooleanExtra("friday", false);
-        boolean saturday = intent.getBooleanExtra("saturday", false);
-        boolean sunday = intent.getBooleanExtra("sunday", false);
 
         String geofenceId = geofenceHelper.generateRequestId();
         Boolean SchedStat = false;
@@ -219,13 +233,13 @@ public class addSched_activity extends ComponentActivity {
         Map<String, Object> geofenceData = new HashMap<>();
         geofenceData.put("Sched", schedName);
         geofenceData.put("Time", selectedTime);
-        geofenceData.put("Monday", monday);
-        geofenceData.put("Tuesday", tuesday);
-        geofenceData.put("Wednesday", wednesday);
-        geofenceData.put("Thursday", thursday);
-        geofenceData.put("Friday", friday);
-        geofenceData.put("Saturday", saturday);
-        geofenceData.put("Sunday", sunday);
+        geofenceData.put("Monday", monday2);
+        geofenceData.put("Tuesday", tuesday2);
+        geofenceData.put("Wednesday", wednesday2);
+        geofenceData.put("Thursday", thursday2);
+        geofenceData.put("Friday", friday2);
+        geofenceData.put("Saturday", saturday2);
+        geofenceData.put("Sunday", sunday2);
         geofenceData.put("Email", currentUser);
         geofenceData.put("uniqueID", geofenceId);
         geofenceData.put("SchedStat", SchedStat);
@@ -248,7 +262,25 @@ public class addSched_activity extends ComponentActivity {
                     }
                 });
         }
+    private void updateRepeatSchedButtonText(boolean monday, boolean tuesday, boolean wednesday,
+                                             boolean thursday, boolean friday, boolean saturday,
+                                             boolean sunday) {
+        StringBuilder buttonText = new StringBuilder("");
 
+        if (monday) buttonText.append("Mon ");
+        if (tuesday) buttonText.append("Tue ");
+        if (wednesday) buttonText.append("Wed ");
+        if (thursday) buttonText.append("Thu ");
+        if (friday) buttonText.append("Fri ");
+        if (saturday) buttonText.append("Sat ");
+        if (sunday) buttonText.append("Sun ");
+
+        // Set text based on selected days
+        if (!buttonText.toString().equals("")) {
+            RepeatSchedd.setText("Repeat");
+        RepeatSchedd.setText(buttonText.toString());
+        }
+    }
     }
 
 

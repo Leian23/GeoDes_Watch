@@ -49,6 +49,7 @@ public class RepeatAlertActivity extends ComponentActivity {
 
                 // Start the next activity
                 startActivity(intent);
+                finish();
 
             }
         });
