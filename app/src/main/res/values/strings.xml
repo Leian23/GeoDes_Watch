@@ -62,6 +62,12 @@
         <item>Ringtone 2</item>
         <item>Ringtone 3</item>
     </string-array>
+    <!-- New string resources -->
+    <string name="ringtone_label">Ringtone</string>
+    <string name="alarm_ringtone_label">Alarm Ringtone</string>
+
+    <string name="mapbox_access_token">pk.eyJ1IjoibGVhbjIzIiwiYSI6ImNsbjF3MXBmbTAydDcyanIzODJpMTBzNWwifQ.OXSDLVAWX9HS2Bos3k6Igw</string>
+    <string name="audio_output_label">Audio Output</string>
 
 
 

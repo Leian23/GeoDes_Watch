@@ -1,6 +1,7 @@
 package com.example.geodes_____watch.Settings_section;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Ringtone;
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -18,6 +20,9 @@ import com.example.geodes_____watch.R;
 public  class MyPreferenceFragment extends PreferenceFragmentCompat {
 
     private static final int REQUEST_RINGTONE_PICKER = 1;
+    private static final String PREF_ALARM_RINGTONE = "alarm_ringtone";
+    private static final String KEY_SELECTED_ALARM_RINGTONE_URI = "selected_alarm_ringtone_uri";
+    private static final int REQUEST_ALARM_RINGTONE_PICKER = 2;
     private SharedPreferences sharedPreferences;
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -40,6 +45,9 @@ public  class MyPreferenceFragment extends PreferenceFragmentCompat {
             });
         }
         updateRingtonePreferenceSummary();
+        updateAlarmRingtonePreferenceSummary();
+        updateAlertTypePreferenceSummary();
+        updateAudioOutputPreferenceSummary();
 
 
     }
@@ -55,6 +63,9 @@ public  class MyPreferenceFragment extends PreferenceFragmentCompat {
             if (requestCode == REQUEST_RINGTONE_PICKER) {
                 savePreference("selected_ringtone_uri", selectedUri);
                 updateRingtonePreferenceSummary();
+            }else if (requestCode == REQUEST_ALARM_RINGTONE_PICKER) {
+                savePreference(KEY_SELECTED_ALARM_RINGTONE_URI, selectedUri);
+                updateAlarmRingtonePreferenceSummary();
             }
         }
 
@@ -71,6 +82,13 @@ public  class MyPreferenceFragment extends PreferenceFragmentCompat {
         Preference ringtonePreference = findPreference("ringtone");
         if (ringtonePreference != null) {
             updatePreferenceSummary(ringtonePreference, "selected_ringtone_uri", "Ringtone");
+        }
+    }
+
+    private void updateAlarmRingtonePreferenceSummary() {
+        Preference alarmRingtonePreference = findPreference(PREF_ALARM_RINGTONE);
+        if (alarmRingtonePreference != null) {
+            updatePreferenceSummary(alarmRingtonePreference, KEY_SELECTED_ALARM_RINGTONE_URI, getString(R.string.alarm_ringtone_label));
         }
     }
 
@@ -102,6 +120,26 @@ public  class MyPreferenceFragment extends PreferenceFragmentCompat {
         return null;
     }
 
+
+    private void updateAlertTypePreferenceSummary() {
+        ListPreference alertTypePreference = findPreference("alert_type");
+        if (alertTypePreference != null) {
+            String alertType = sharedPreferences.getString("alert_type", "outer Alert"); // Default to "outer Alert"
+            alertTypePreference.setSummary(alertType);
+        }
+    }
+
+    public String getAlertTypePreference(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString("alert_type", "outer Alert");
+    }
+
+    private void updateAudioOutputPreferenceSummary() {
+        ListPreference audioOutputPreference = findPreference("audio_output");
+        if (audioOutputPreference != null) {
+            updatePreferenceSummary(audioOutputPreference, "audio_output", getString(R.string.audio_output_label));
+        }
+    }
 
 
 

@@ -114,6 +114,7 @@
                 android:textOn="thu" />
 
             <ImageButton
+                android:id="@+id/confirmRepeat"
                 android:layout_width="65dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
