@@ -136,54 +136,20 @@
             app:layout_constraintWidth_percent="0.42" />
 
 
-        <RelativeLayout
+        <Button
+            android:id="@+id/OfflineMap"
             android:layout_width="0dp"
             android:layout_height="45dp"
-            android:layout_gravity="center"
             android:layout_marginTop="350dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.85">
-
-            <FrameLayout
-                android:id="@+id/OfflineMap"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/round_corner"
-                android:paddingLeft="130dp">
-
-                <!-- Download Icon -->
-
-                <!-- Circle Progress Bar -->
-                <ImageView
-                    android:id="@+id/downloadIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="Download Icon"
-                    android:src="@drawable/baseline_arrow_circle_down_24" />
-
-                <ProgressBar
-                    android:id="@+id/downloadProgressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:max="100"
-                    android:progress="0"
-                    android:visibility="gone" />
-
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Help"
-                android:textSize="12dp" />
-
-        </RelativeLayout>
+            app:layout_constraintWidth_percent="0.85"
+            android:background="@drawable/round_corner"
+            android:textAllCaps="false"
+            android:text="Help"
+            android:textSize="12dp"
+            android:layout_gravity="center"/>
 
         <RelativeLayout
             android:layout_width="0dp"

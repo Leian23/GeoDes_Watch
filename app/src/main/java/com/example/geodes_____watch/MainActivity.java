@@ -27,6 +27,7 @@ import com.example.geodes_____watch.MapSection.search_location.ResultLocation;
 import com.example.geodes_____watch.MapSection.search_location.SearchResultsAdapter;
 import com.example.geodes_____watch.Sched_section.ScheduleActivity;
 import com.example.geodes_____watch.Settings_section.settings_activity;
+import com.google.rpc.Help;
 
 
 import org.json.JSONArray;
@@ -133,9 +134,17 @@ public class MainActivity extends ComponentActivity {
                 startActivity(intent);
             }
         });
-
-
+        Button helpButton = findViewById(R.id.OfflineMap);
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
+
 
     private void launchKeyboard() {
         Intent intent = new Intent("com.google.android.wearable.action.LAUNCH_KEYBOARD");
