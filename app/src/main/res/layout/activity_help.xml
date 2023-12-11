@@ -86,7 +86,7 @@
                 android:lineSpacingExtra="4sp"
                 android:text="After clicking the map and navigating through it you will see three buttons, each one has different functionalities.
                  If you want to locate where you are at, you will have to click the middle button below, if you want to go back to the main screen then you will have to click the right button with the 'x' mark.
-                We will now learn how to save an alert by clicking the button in the left."/>
+                 By clicking the bottom left button, a pin will appear. We will now learn how to save an alert by clicking the button in the left."/>
 
             <TextView
                 android:id="@+id/titlePinAlerts"
@@ -200,7 +200,7 @@ the mic button. Once all the fields have been filled up, it should look like thi
                 android:padding="8dp"
                 android:textSize="12sp"
                 android:lineSpacingExtra="4sp"
-                android:text="For the final part, you will then click the save button which you will se by scrolling at the far bottom of the screen.
+                android:text="For the final part, you will then click the save button which you will see by scrolling at the far bottom of the screen.
 It will also indicate that the alert has been saved."/>
             <ImageView
                 android:id="@+id/alertSavedSuccessful"
@@ -304,7 +304,7 @@ where you will enter your schedule name, pick which alert/s you want to schedule
                 android:padding="8dp"
                 android:textSize="12sp"
                 android:lineSpacingExtra="4sp"
-                android:text="Below is what is should look like when all of the requirements are filled."/>
+                android:text="Below is what it should look like when all of the requirements are filled."/>
             <ImageView
                 android:id="@+id/scheduleSavingName"
                 android:layout_width="150dp"
