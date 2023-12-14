@@ -153,10 +153,8 @@ public class AuthActivity extends ComponentActivity {
                     }
                 }
             });
-
             //checkIfConnected();
         }
-
     }
 
     public void addNewDevice(){

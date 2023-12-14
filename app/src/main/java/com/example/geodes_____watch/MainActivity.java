@@ -46,6 +46,8 @@ import org.osmdroid.util.GeoPoint;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -137,44 +139,11 @@ public class MainActivity extends ComponentActivity {
         unPair.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Reference to Firestore
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                // Reference to the wareOS collection
-                CollectionReference wareOSCollection = db.collection("wareOS");
-
-                // Query to find the document with "code" field equal to Constants.user_code
-                Query query = wareOSCollection.whereEqualTo("code", Constants.user_code);
-
-                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Delete the document from wareOS collection
-                                DocumentReference wareOSDocument = wareOSCollection.document(document.getId());
-                                wareOSDocument.delete()
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    // Document deleted successfully
-                                                    // Now remove its ID from the "selectedDevicesID" field in the users collection
-                                                    removeDeviceIdFromUsers(document.getId());
-                                                    Intent intent = new Intent(MainActivity.this, AuthActivity.class);
-                                                    startActivity(intent);
-                                                } else {
-                                                    // Failed to delete the document from wareOS collection
-                                                    // Handle the error
-                                                }
-                                            }
-                                        });
-                            }
-                        } else {
-                            // Handle the error
-                        }
-                    }
-                });
+                removeDeviceIdFromUsers();
+                Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -232,7 +201,7 @@ public class MainActivity extends ComponentActivity {
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Voice search for location");
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
     }
-    private void removeDeviceIdFromUsers(String wareOSDocumentId) {
+    private void removeDeviceIdFromUsers() {
         // Reference to Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -247,21 +216,14 @@ public class MainActivity extends ComponentActivity {
             public void onComplete(Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot userDocument : task.getResult()) {
-                        // Remove the wareOSDocumentId from the selectedDevicesID array
+                        // Remove the entire selectedDeviceID field
                         DocumentReference userDocumentRef = usersCollection.document(userDocument.getId());
-                        userDocumentRef.update("selectedDevicesID", FieldValue.arrayRemove(wareOSDocumentId))
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            // ID removed successfully from the selectedDevicesID field
-                                            // You can add any additional logic here
-                                        } else {
-                                            // Failed to remove the ID from the selectedDevicesID field
-                                            // Handle the error
-                                        }
-                                    }
-                                });
+
+                        // Create a HashMap to update the document
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("selectedDeviceID", FieldValue.delete());
+
+                        userDocumentRef.update(updates);
                     }
                 } else {
                     // Handle the error

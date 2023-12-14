@@ -262,13 +262,4 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
         intent.setAction("com.example.geodes_____watch.main_app.create_geofence_functions.ACTION_GEOFENCE_TRANSITION");
         return PendingIntent.getBroadcast(this, requestCode, intent, flags);}
 
-
-
-
-
-
-
-
-
-
 }
