@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.wear.widget.WearableRecyclerView;
 
 
+import com.example.geodes_____watch.Constants;
 import com.example.geodes_____watch.MapSection.create_geofence_functions.GeofenceBroadcastReceiver;
 import com.example.geodes_____watch.MapSection.create_geofence_functions.GeofenceHelper;
 import com.example.geodes_____watch.R;
@@ -51,13 +52,10 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
     private GeofencingClient geofencingClient;
     private GeofenceHelper geofenceHelper;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alerts);
-
 
         geofencingClient = LocationServices.getGeofencingClient(this);
         geofenceHelper = new GeofenceHelper();
@@ -73,7 +71,7 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
         db.setFirestoreSettings(settings);
 
 
-        String userEmail = "yow@gmail.com";
+        String userEmail = Constants.user_email;
 
         // Assuming "users" is the collection name in Firestore
         CollectionReference entryCollection = firestore.collection("geofencesEntry");

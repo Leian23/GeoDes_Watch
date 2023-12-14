@@ -14,20 +14,28 @@ import android.widget.Toast;
 
 import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.wear.widget.WearableRecyclerView;
 
+import com.example.geodes_____watch.Constants;
 import com.example.geodes_____watch.MapSection.create_geofence_functions.GeofenceHelper;
+import com.example.geodes_____watch.Sched_section.add_alertt_recycle_view.AlertAdapter5;
+import com.example.geodes_____watch.Sched_section.add_alertt_recycle_view.DataModel5;
 import com.example.geodes_____watch.Sched_section.add_alertt_recycle_view.list_alerts;
 import com.example.geodes_____watch.R;
 
 import com.example.geodes_____watch.Sched_section.repeat_alert_activity.RepeatAlertActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +53,8 @@ public class addSched_activity extends ComponentActivity {
     private GeofenceHelper geofenceHelper = new GeofenceHelper();
     boolean monday, tuesday,wednesday,thursday,friday,saturday,sunday;
 
+    private String togmon = "", togtue = "", togwed = "", togthu = "", togfri = "", togsat = "", togsun = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +64,7 @@ public class addSched_activity extends ComponentActivity {
 
         voiceSearchButton = findViewById(R.id.voiceSearchButton);
 
+        fetchAlertsFromFirestore();
 
         voiceSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +95,7 @@ public class addSched_activity extends ComponentActivity {
                 }
                 else {
                     //temporary constant variable, replace when auth is integrated
-                    String currentUser = "yow@gmail.com";
+                    String currentUser = Constants.user_email;
                     saveSchedToFirestore(currentUser);
 
                     Intent intent = new Intent(addSched_activity.this, ScheduleActivity.class);
@@ -94,14 +105,6 @@ public class addSched_activity extends ComponentActivity {
             }
         });
 
-        addAlert = findViewById(R.id.ChooseAlert);
-        addAlert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(addSched_activity.this, list_alerts.class);
-                startActivity(intent);
-            }
-        });
 
         btnPickTime = findViewById(R.id.PickTime);
         btnPickTime.setOnClickListener(new View.OnClickListener() {
@@ -211,7 +214,7 @@ public class addSched_activity extends ComponentActivity {
     private void saveSchedToFirestore(String currentUser){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         //temporary constant user, replace when auth is integrated
-        currentUser = "yow@gmail.com";
+        currentUser = Constants.user_email;
         boolean monday2 = monday;
         boolean tuesday2 = tuesday;
         boolean wednesday2 = wednesday;
@@ -243,6 +246,15 @@ public class addSched_activity extends ComponentActivity {
         geofenceData.put("Email", currentUser);
         geofenceData.put("uniqueID", geofenceId);
         geofenceData.put("SchedStat", SchedStat);
+
+        RecyclerView recyclerViewSched = findViewById(R.id.item_alert_choose);
+        AlertAdapter5 adapterSched = (AlertAdapter5) recyclerViewSched.getAdapter();
+
+        // Include the selected items' unique IDs in your Firestore data
+        Set<String> selectedItemsIds = adapterSched.getSelectedItemsIds();
+        if (!selectedItemsIds.isEmpty()) {
+            geofenceData.put("selectedItemsIds", new ArrayList<>(selectedItemsIds));
+        }
 
         // Add the geofenceData to Firestore
         db.collection("geofenceSchedule")
@@ -280,6 +292,49 @@ public class addSched_activity extends ComponentActivity {
             RepeatSchedd.setText("Repeat");
         RepeatSchedd.setText(buttonText.toString());
         }
+    }
+    private void fetchAlertsFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        CollectionReference geofenceEntryCollection = db.collection("geofencesEntry");
+        CollectionReference geofenceExitCollection = db.collection("geofencesExit");
+
+        // Combine the results of both collections
+        geofenceEntryCollection.whereEqualTo("email", Constants.user_email).get().addOnSuccessListener(entrySnapshots -> {
+            List<DataModel5> alertItems = new ArrayList<>();
+            for (QueryDocumentSnapshot documentSnapshot : entrySnapshots) {
+                String alertName = documentSnapshot.getString("alertName");
+                String uniqueId = documentSnapshot.getId();
+
+                DataModel5 alertItem = new DataModel5(alertName, R.drawable.get_in, uniqueId);
+                alertItems.add(alertItem);
+            }
+
+            // Fetch data from the "geofenceExit" collection
+            geofenceExitCollection.whereEqualTo("email", Constants.user_email).get().addOnSuccessListener(exitSnapshots -> {
+                for (QueryDocumentSnapshot documentSnapshot : exitSnapshots) {
+                    String alertName = documentSnapshot.getString("alertName");
+                    String uniqueId = documentSnapshot.getId();
+
+                    DataModel5 alertItem = new DataModel5(alertName, R.drawable.get_out, uniqueId);
+                    alertItems.add(alertItem);
+                }
+                WearableRecyclerView recyclerVieww = findViewById(R.id.item_alert_choose);
+                recyclerVieww.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+                AlertAdapter5 adapter1 = new AlertAdapter5(alertItems, this); // Fix the instantiation here
+                recyclerVieww.setAdapter(adapter1);
+                recyclerVieww.setEdgeItemsCenteringEnabled(false);
+
+
+                // Set up RecyclerView with the combined data
+                // setUpRecyclerView(alertItems);
+            }).addOnFailureListener(e -> {
+                // Handle errors
+            });
+
+        }).addOnFailureListener(e -> {
+            // Handle errors
+        });
     }
     }
 

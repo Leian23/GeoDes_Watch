@@ -53,4 +53,6 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828")
     implementation("com.google.firebase:firebase-auth:22.3.0")
     implementation("com.google.firebase:firebase-firestore:24.9.1")
+
+    implementation("com.journeyapps:zxing-android-embedded:4.2.0")
 }

@@ -23,7 +23,7 @@ public class list_alerts extends ComponentActivity {
 
 
         //dito yung list ng choose alerts
-        List<DataModelSched> dataList = new ArrayList<>();
+        /*List<DataModelSched> dataList = new ArrayList<>();
         dataList.add(new DataModelSched("Hello"));
         dataList.add(new DataModelSched("Alert5"));
         dataList.add(new DataModelSched("Alert4"));
@@ -32,7 +32,7 @@ public class list_alerts extends ComponentActivity {
         recyclerVieww.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         AdapterSched adapter1 = new AdapterSched(dataList, this); // Fix the instantiation here
         recyclerVieww.setAdapter(adapter1);
-        recyclerVieww.setEdgeItemsCenteringEnabled(false);
+        recyclerVieww.setEdgeItemsCenteringEnabled(false);*/
 
 
 

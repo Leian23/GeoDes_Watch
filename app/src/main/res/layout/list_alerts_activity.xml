@@ -36,8 +36,30 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingBottom="100dp"
-                android:overScrollMode="never"/>
+                android:overScrollMode="never" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/ChooseAlert"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/round_corner"
+                    android:gravity="center"
+                    android:onClick="onVoiceSearchButtonClick"
+                    android:src="@drawable/baseline_info_24"
+                    android:text="Proceed"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.95" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <FrameLayout
                 android:layout_width="wrap_content"
