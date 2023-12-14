@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,11 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.wear.widget.WearableRecyclerView;
 
+
 import com.example.geodes_____watch.MapSection.create_geofence_functions.GeofenceBroadcastReceiver;
 import com.example.geodes_____watch.MapSection.create_geofence_functions.GeofenceHelper;
 import com.example.geodes_____watch.R;
 import com.example.geodes_____watch.AlertSection.alerts_adapter.Adapter;
 import com.example.geodes_____watch.AlertSection.alerts_adapter.DataModel;
+
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
@@ -27,6 +30,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -47,10 +51,13 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
     private GeofencingClient geofencingClient;
     private GeofenceHelper geofenceHelper;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alerts);
+
 
         geofencingClient = LocationServices.getGeofencingClient(this);
         geofenceHelper = new GeofenceHelper();
@@ -59,11 +66,20 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
         dataList = new ArrayList<>();
         firestore = FirebaseFirestore.getInstance();
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        db.setFirestoreSettings(settings);
+
+
         String userEmail = "yow@gmail.com";
 
         // Assuming "users" is the collection name in Firestore
         CollectionReference entryCollection = firestore.collection("geofencesEntry");
         CollectionReference exitCollection = firestore.collection("geofencesExit");
+
+
 
         Query entryQuery = entryCollection.whereEqualTo("email", userEmail);
         Query exitQuery = exitCollection.whereEqualTo("email", userEmail);
@@ -106,7 +122,6 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
 
     private void processSnapshot(QuerySnapshot snapshot) {
         for (QueryDocumentSnapshot document : snapshot) {
-            // Extract data and create DataModel objects
             String alertName = document.getString("alertName");
             String notes = document.getString("notes");
             Boolean EntryExit = document.getBoolean("EntryType");
@@ -246,8 +261,12 @@ public class AlertsActivity extends ComponentActivity implements Adapter.OnItemC
         int requestCode = 0;
         // Pass geofenceName as an extra to the intent
         intent.putExtra("GEOFENCE_NAME", geofenceName);
-        intent.setAction("com.example.geodes_mobile.main_app.create_geofence_functions.ACTION_GEOFENCE_TRANSITION");
+        intent.setAction("com.example.geodes_____watch.main_app.create_geofence_functions.ACTION_GEOFENCE_TRANSITION");
         return PendingIntent.getBroadcast(this, requestCode, intent, flags);}
+
+
+
+
 
 
 
