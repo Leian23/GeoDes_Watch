@@ -1,5 +1,7 @@
 package com.example.geodes_____watch.Settings_section;
 
+import com.example.geodes_____watch.R;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,34 +10,36 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import com.example.geodes_____watch.R;
 
-public  class MyPreferenceFragment extends PreferenceFragmentCompat {
 
+public class MyPreferenceFragment extends PreferenceFragmentCompat {
+    private static final String PREF_RINGTONE = "ringtone";
+    private static final String KEY_SELECTED_RINGTONE_URI = "selected_ringtone_uri";
     private static final int REQUEST_RINGTONE_PICKER = 1;
     private static final String PREF_ALARM_RINGTONE = "alarm_ringtone";
     private static final String KEY_SELECTED_ALARM_RINGTONE_URI = "selected_alarm_ringtone_uri";
+
+    private static final String PREF_DISTANCE_UNIT = "distance_unit_preference";
     private static final int REQUEST_ALARM_RINGTONE_PICKER = 2;
     private SharedPreferences sharedPreferences;
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
-
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
 
-        // Find the custom ringtone preference
-        Preference ringtonePreference = findPreference("ringtone");
+        Preference ringtonePreference = findPreference(PREF_RINGTONE);
 
-        // Set the click listener for the custom ringtone preference
         if (ringtonePreference != null) {
             ringtonePreference.setOnPreferenceClickListener(preference -> {
                 // Launch the ringtone picker
@@ -44,14 +48,22 @@ public  class MyPreferenceFragment extends PreferenceFragmentCompat {
                 return true;
             });
         }
+
+        Preference alarmRingtonePreference = findPreference(PREF_ALARM_RINGTONE);
+
+        if (alarmRingtonePreference != null) {
+            alarmRingtonePreference.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+                startActivityForResult(intent, REQUEST_ALARM_RINGTONE_PICKER);
+                return true;
+            });
+        }
+
         updateRingtonePreferenceSummary();
         updateAlarmRingtonePreferenceSummary();
-        updateAlertTypePreferenceSummary();
-        updateAudioOutputPreferenceSummary();
 
 
     }
-
 
 
     @Override
@@ -59,11 +71,10 @@ public  class MyPreferenceFragment extends PreferenceFragmentCompat {
         if (resultCode == Activity.RESULT_OK) {
             Uri selectedUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
 
-            // Save the selected URI in SharedPreferences
             if (requestCode == REQUEST_RINGTONE_PICKER) {
-                savePreference("selected_ringtone_uri", selectedUri);
+                savePreference(KEY_SELECTED_RINGTONE_URI, selectedUri);
                 updateRingtonePreferenceSummary();
-            }else if (requestCode == REQUEST_ALARM_RINGTONE_PICKER) {
+            } else if (requestCode == REQUEST_ALARM_RINGTONE_PICKER) {
                 savePreference(KEY_SELECTED_ALARM_RINGTONE_URI, selectedUri);
                 updateAlarmRingtonePreferenceSummary();
             }
@@ -79,9 +90,9 @@ public  class MyPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void updateRingtonePreferenceSummary() {
-        Preference ringtonePreference = findPreference("ringtone");
+        Preference ringtonePreference = findPreference(PREF_RINGTONE);
         if (ringtonePreference != null) {
-            updatePreferenceSummary(ringtonePreference, "selected_ringtone_uri", "Ringtone");
+            updatePreferenceSummary(ringtonePreference, KEY_SELECTED_RINGTONE_URI, getString(R.string.ringtone_label));
         }
     }
 
@@ -93,7 +104,6 @@ public  class MyPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void updatePreferenceSummary(Preference preference, String uriKey, String defaultSummary) {
-        // Retrieve the saved URI
         String uriString = sharedPreferences.getString(uriKey, null);
 
         if (preference != null) {
@@ -102,7 +112,16 @@ public  class MyPreferenceFragment extends PreferenceFragmentCompat {
                 String name = getRingtoneName(uri);
                 preference.setSummary((name != null ? name : "None"));
             } else {
-                preference.setSummary("Select custom " + defaultSummary.toLowerCase());
+                // Set a default ringtone here
+                Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+                String defaultRingtoneName = getRingtoneName(defaultRingtoneUri);
+
+                if (defaultRingtoneName != null) {
+                    preference.setSummary(defaultRingtoneName);
+                    savePreference(uriKey, defaultRingtoneUri);
+                } else {
+                    preference.setSummary("Select custom " + defaultSummary.toLowerCase());
+                }
             }
         }
     }
@@ -120,27 +139,13 @@ public  class MyPreferenceFragment extends PreferenceFragmentCompat {
         return null;
     }
 
-
-    private void updateAlertTypePreferenceSummary() {
-        ListPreference alertTypePreference = findPreference("alert_type");
-        if (alertTypePreference != null) {
-            String alertType = sharedPreferences.getString("alert_type", "outer Alert"); // Default to "outer Alert"
-            alertTypePreference.setSummary(alertType);
-        }
+    public Uri getSelectedAlarmRingtoneUri() {
+        String uriString = sharedPreferences.getString(KEY_SELECTED_ALARM_RINGTONE_URI, null);
+        return uriString != null ? Uri.parse(uriString) : null;
     }
 
-    public String getAlertTypePreference(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getString("alert_type", "outer Alert");
-    }
-
-    private void updateAudioOutputPreferenceSummary() {
-        ListPreference audioOutputPreference = findPreference("audio_output");
-        if (audioOutputPreference != null) {
-            updatePreferenceSummary(audioOutputPreference, "audio_output", getString(R.string.audio_output_label));
-        }
-    }
 
 
 
 }
+
