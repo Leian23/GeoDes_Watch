@@ -12,16 +12,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.ComponentActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.wear.widget.WearableRecyclerView;
 
-import com.example.geodes_____watch.AlertSection.AlertsActivity;
-import com.example.geodes_____watch.MapSection.map_activity;
-import com.example.geodes_____watch.MapSection.search_location.LocationResultt;
-import com.example.geodes_____watch.MapSection.search_location.ResultLocation;
-import com.example.geodes_____watch.MapSection.search_location.SearchResultsAdapter;
 import com.example.geodes_____watch.R;
 
 public class DismissAtivity extends ComponentActivity {

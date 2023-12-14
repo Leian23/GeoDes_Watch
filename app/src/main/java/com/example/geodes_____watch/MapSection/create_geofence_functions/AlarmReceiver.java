@@ -9,9 +9,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
-
-import androidx.preference.PreferenceManager;
 
 import java.io.IOException;
 
@@ -19,6 +18,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private static MediaPlayer mediaPlayer;
     private static Vibrator vibrator;
+    private static boolean shakeToDismissEnabled;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -36,8 +36,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         // Retrieve the user's preference for vibration
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean enableVibration = sharedPreferences.getBoolean("enable_vibration", true);
-        Log.d("AlarmReceiver", "Enable Vibration: " + enableVibration);
+        shakeToDismissEnabled = sharedPreferences.getBoolean("shake_to_dismiss", true);
+        Log.d("AlarmReceiver", "Shake to Dismiss Enabled: " + shakeToDismissEnabled);
 
         // Retrieve the user's preference for audio output
         String selectedAudioOutput = sharedPreferences.getString("audio_output", "both_speaker_and_headphones");
@@ -71,9 +71,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                 }
 
                 // Retrieve the user's preference for volume
-                // int volume = sharedPreferences.getInt("volume", 50); // Default volume if not set
-                //float volumeLevel = volume / 100.0f; // Convert to a float between 0.0 and 1.0
-                //mediaPlayer.setVolume(volumeLevel, volumeLevel);
+                int volume = sharedPreferences.getInt("volume", 50); // Default volume if not set
+                float volumeLevel = volume / 100.0f; // Convert to a float between 0.0 and 1.0
+                mediaPlayer.setVolume(volumeLevel, volumeLevel);
 
                 // Set up asynchronous preparation
                 mediaPlayer.prepareAsync();
@@ -83,15 +83,13 @@ public class AlarmReceiver extends BroadcastReceiver {
                     Log.d("AlarmReceiver", "MediaPlayer setup completed, starting playback");
                     mp.start();
 
-                    // Vibrate if enabled
-                    if (enableVibration) {
-                        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-                        if (vibrator != null) {
-                            long[] pattern = {0, 1000, 1000}; // Vibrate for 1 second, wait for 1 second, repeat
-                            vibrator.vibrate(VibrationEffect.createWaveform(pattern, 0));
 
-                        }
+                    // Vibrate if enabled
+                    if (shakeToDismissEnabled) {
+                        registerShakeDetector(context);
                     }
+
+                    // You can also add code here to handle other actions when the alarm starts
                 });
 
             } catch (IOException e) {
@@ -101,6 +99,14 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
+    private void registerShakeDetector(Context context) {
+        ShakeDetector shakeDetector = new ShakeDetector(context);
+        shakeDetector.setOnShakeListener(() -> {
+            // Shake detected, stop the alarm
+            stopAlarm();
+        });
+        shakeDetector.start();
+    }
 
     static void stopAlarm() {
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
@@ -121,4 +127,3 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 }
-

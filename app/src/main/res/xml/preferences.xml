@@ -16,12 +16,14 @@
             android:key="volume"
             android:title="Volume"
             android:summary="Adjust volume"
-            android:defaultValue="100"
-            android:max="100"/>
+            android:defaultValue="50"
+            android:max="100" />
 
-        <SwitchPreference
-            android:key="Shake to Dismiss"
+
+        <CheckBoxPreference
+            android:key="shake_to_dismiss"
             android:title="Shake to Dismiss"
+            android:summary="Enable shake to dismiss alarm"
             android:defaultValue="true" />
 
         <CheckBoxPreference
