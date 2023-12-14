@@ -39,10 +39,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         // Retrieve the user's preference for vibration
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         shakeToDismissEnabled = sharedPreferences.getBoolean("shake_to_dismiss", true);
+
+
         Log.d("AlarmReceiver", "Shake to Dismiss Enabled: " + shakeToDismissEnabled);
 
-        boolean enableVibration = sharedPreferences.getBoolean("enable_vibration", true);
-        Log.d("AlarmReceiver", "Enable Vibration: " + enableVibration);
+
+        boolean enableVibration = sharedPreferences.getBoolean("vibration", true);
+
 
         // Retrieve the user's preference for audio output
         String selectedAudioOutput = sharedPreferences.getString("audio_output", "both_speaker_and_headphones");

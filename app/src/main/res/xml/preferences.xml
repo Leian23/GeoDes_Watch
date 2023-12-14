@@ -20,17 +20,18 @@
             android:max="100" />
 
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="shake_to_dismiss"
             android:title="Shake to Dismiss"
             android:summary="Enable shake to dismiss alarm"
             android:defaultValue="true" />
 
-        <CheckBoxPreference
+
+        <SwitchPreference
             android:key="vibration"
             android:title="Vibration"
             android:summary="Enable vibration"
-            android:defaultValue="true"/>
+            android:defaultValue="true" />
 
     </PreferenceCategory>
 </PreferenceScreen>
