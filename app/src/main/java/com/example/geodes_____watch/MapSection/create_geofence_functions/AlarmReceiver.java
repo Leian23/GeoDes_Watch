@@ -34,10 +34,15 @@ public class AlarmReceiver extends BroadcastReceiver {
             return;
         }
 
+
+
         // Retrieve the user's preference for vibration
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         shakeToDismissEnabled = sharedPreferences.getBoolean("shake_to_dismiss", true);
         Log.d("AlarmReceiver", "Shake to Dismiss Enabled: " + shakeToDismissEnabled);
+
+        boolean enableVibration = sharedPreferences.getBoolean("enable_vibration", true);
+        Log.d("AlarmReceiver", "Enable Vibration: " + enableVibration);
 
         // Retrieve the user's preference for audio output
         String selectedAudioOutput = sharedPreferences.getString("audio_output", "both_speaker_and_headphones");
@@ -87,6 +92,16 @@ public class AlarmReceiver extends BroadcastReceiver {
                     // Vibrate if enabled
                     if (shakeToDismissEnabled) {
                         registerShakeDetector(context);
+                    }
+
+
+                    if (enableVibration) {
+                        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                        if (vibrator != null) {
+                            long[] pattern = {0, 1000, 1000}; // Vibrate for 1 second, wait for 1 second, repeat
+                            vibrator.vibrate(VibrationEffect.createWaveform(pattern, 0));
+
+                        }
                     }
 
                     // You can also add code here to handle other actions when the alarm starts

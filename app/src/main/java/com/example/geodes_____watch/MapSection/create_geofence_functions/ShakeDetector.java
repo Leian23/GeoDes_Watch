@@ -7,8 +7,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 public class ShakeDetector implements SensorEventListener {
-    private static final float SHAKE_THRESHOLD = 5.0f; // Adjust as needed
-    private static final int SHAKE_TIMEOUT = 500; // Adjust as needed
+    private static final float SHAKE_THRESHOLD = 10.0f; // Adjust as needed for less sensitivity
+    private static final int SHAKE_TIMEOUT = 1000; // Adjust as needed
 
     private SensorManager sensorManager;
     private OnShakeListener listener;
