@@ -417,6 +417,8 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         scheduleAlarm(context, geofenceName);
         showDismissNotificationOuter(context);
     }
+
+
     private void scheduleAlarm(Context context, String geofenceName) {
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra("GEOFENCE_NAME", geofenceName);

@@ -20,6 +20,8 @@ import com.example.geodes_____watch.Sched_section.ScheduleActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class Adapter1 extends WearableRecyclerView.Adapter<Adapter1.ViewHolder> {
@@ -107,6 +109,8 @@ public class Adapter1 extends WearableRecyclerView.Adapter<Adapter1.ViewHolder> 
 
         ImageView alarmIc;
 
+        TextView alarmList;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -119,6 +123,7 @@ public class Adapter1 extends WearableRecyclerView.Adapter<Adapter1.ViewHolder> 
             calendarIc = itemView.findViewById(R.id.calendarImage);
             alarmIc = itemView.findViewById(R.id.AlarmIc);
             daySched = itemView.findViewById(R.id.DaySched);
+            alarmList = itemView.findViewById(R.id.alarmsSaved);
 
         }
 
@@ -131,6 +136,7 @@ public class Adapter1 extends WearableRecyclerView.Adapter<Adapter1.ViewHolder> 
             clockIc.setImageResource(data.getIconCal());
             calendarIc.setImageResource(data.getIconCal());
             daySched.setText(data.getSchedules());
+            alarmList.setText(data.getConcatenatedAlertNames());
         }
     }
 

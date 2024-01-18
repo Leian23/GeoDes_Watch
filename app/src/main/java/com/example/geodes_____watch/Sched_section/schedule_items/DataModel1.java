@@ -18,7 +18,9 @@ public class DataModel1 {
 
     private List<String> selectedItemsIds;
 
-    public DataModel1(String schedTitle, String getTime, String schedAlarms, int iconCal, int entryImage, int iconMarker, Boolean isAlertSwitchOn, String uniqueId, String Schedules, List<String> selectedItemsIds) {
+    private String concatenatedAlertNames; // New field for concatenated alert names
+
+    public DataModel1(String schedTitle, String getTime, String schedAlarms, int iconCal, int entryImage, int iconMarker, Boolean isAlertSwitchOn, String uniqueId, String Schedules, List<String> selectedItemsIds, String concatenatedAlertNames) {
         this.schedTitle = schedTitle;
         this.getTime = getTime;
         this.schedAlarms = schedAlarms;
@@ -26,6 +28,10 @@ public class DataModel1 {
         this.uniqueId = uniqueId;
         this.Schedules = Schedules;
         this.selectedItemsIds = selectedItemsIds;
+        this.iconCal = iconCal;
+        this.entryImage = entryImage;
+        this.iconMarker = iconMarker;
+        this.concatenatedAlertNames = concatenatedAlertNames;
     }
 
     public String getSchedTitle() {
@@ -70,6 +76,10 @@ public class DataModel1 {
 
     public List<String> getSelectedItemsIds() {
         return selectedItemsIds;
+    }
+
+    public String getConcatenatedAlertNames() {
+        return concatenatedAlertNames;
     }
 
     // Add getters and setters for other fields if needed

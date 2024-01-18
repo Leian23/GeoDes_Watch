@@ -22,6 +22,7 @@ import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
+import com.example.geodes_____watch.Constants;
 import com.example.geodes_____watch.MapSection.create_geofence_functions.GeofenceHelper;
 import com.example.geodes_____watch.MapSection.create_geofence_functions.MapFunctionHandler;
 import com.example.geodes_____watch.MapSection.map_activity;
@@ -146,7 +147,7 @@ public class addAlertActivity extends ComponentActivity {
                     boolean isEntryorExit = MapFunctionHandler.geTEntryOrExit();
 
 
-                    String currentUser = "yow@gmail.com";
+                    String currentUser = Constants.user_email;
 
 
                     if (isEntryorExit) {
@@ -385,7 +386,7 @@ public class addAlertActivity extends ComponentActivity {
 
     private void saveEntryAlertToFirestore(String currentUser, String AlertName, GeoPoint Point, float outRadius, float innRadius, String outerCode, String innerCode, String Notes, boolean alertenabled, boolean isEntry) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        currentUser = "yow@gmail.com";
+        currentUser = Constants.user_email;
 
         String geofenceId = geofenceHelper.generateRequestId();
         Map<String, Object> alertData = new HashMap<>();
@@ -427,7 +428,7 @@ public class addAlertActivity extends ComponentActivity {
 
     private void saveExitGeofenceDataToFirestore(String currentUser, String AlertName, GeoPoint Point, float outRadius, String ExitCode, String Notes, boolean alertenabled, boolean isExit) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        currentUser = "yow@gmail.com";
+        currentUser = Constants.user_email;
 
         String geofenceId = geofenceHelper.generateRequestId();
 
